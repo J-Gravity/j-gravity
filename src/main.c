@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyork <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: crenfrow <crenfrow@student.42.us>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/28 18:43:50 by kyork             #+#    #+#             */
-/*   Updated: 2017/04/28 18:44:17 by kyork            ###   ########.fr       */
+/*   Created: 2017/04/28 18:24:27 by crenfrow          #+#    #+#             */
+/*   Updated: 2017/04/28 18:24:54 by crenfrow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** Dummy main file
-*/
-
-int		main(void)
+int main(int ac, char *av[])
 {
+	(void)ac;
+	(void)av;
 	return (0);
 }

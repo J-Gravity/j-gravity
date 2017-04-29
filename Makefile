@@ -6,7 +6,7 @@
 #    By: crenfrow <crenfrow@student.42.us>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/28 18:13:59 by crenfrow          #+#    #+#              #
-#    Updated: 2017/04/28 18:25:06 by crenfrow         ###   ########.fr        #
+#    Updated: 2017/04/28 19:15:21 by kyork            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ CLI_NAME=j-grav
 
 all: $(CLI_NAME)
 
-$(CLI_NAME): main.c
+$(CLI_NAME): src/main.c
 	gcc $^ -o $@
 
 test:
-	$(CLI_NAME) test
+	./$(CLI_NAME) test
