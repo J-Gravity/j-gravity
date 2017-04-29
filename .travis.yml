@@ -1,0 +1,13 @@
+language: c
+install: make rvm
+compiler: [clang, gcc]
+
+before_install:
+ - rvm install 2.4.1
+ - gem install --no-rdoc norminette -v 1.0.0.alpha --pre
+ - norminette src/ | sh -c '! grep -e "^(Warning|Error)" -B1 || (echo "Norm failure"; exit 1)'
+
+script:
+ - make
+ - make test
+
