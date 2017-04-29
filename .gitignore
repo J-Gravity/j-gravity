@@ -1,3 +1,6 @@
+
+norminette/vendor
+
 # Object files
 *.o
 *.ko
