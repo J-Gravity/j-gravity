@@ -1,3 +1,7 @@
+
+norminette/vendor
+norminette/.bundle/config
+
 # Object files
 *.o
 *.ko
