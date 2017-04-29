@@ -1,13 +1,16 @@
 language: c
-install: make rvm
 compiler: [clang]
 
 before_install:
  - rvm install 2.4.1
  - (cd norminette; bundle install)
- - (cd norminette; bundle exec ruby norminette.rb) | sh -c '! grep -e "^(Warning|Error)" -B1 || (echo "Norm failure"; exit 1)'
+ - "ruby norminette/norminette.rb $(find src -name '*.c' -o -name '*.h') src/ 2>&1 > norm_output || true"
+ - sh -c '! grep -e "^(Warning|Error)" -B1 norm_output || (echo "Norm failure"; exit 1)'
+ - sh -c 'grep -e "TCP connection" norm_output && (echo "Norm could not connect" 1>&2)' || true
+
+install:
+ - make DEBUG=1
 
 script:
- - make
- - make test
+ - make DEBUG=1 test
 
