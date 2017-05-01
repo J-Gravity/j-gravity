@@ -1,4 +1,4 @@
-#define TIMESTEP 400000
+#define TIMESTEP 10000
 #define MAX_VEL 300000000
 #define G 0.0000000000667408
 #define GSTEP 0.0000000667408
@@ -16,9 +16,9 @@ __kernel void do_step(
     float4 acc = a[i];
     float4 pos = p[i];
 
-    vel.x += acc.x * GSTEP;
-    vel.y += acc.y * GSTEP;
-    vel.z += acc.z * GSTEP;
+    vel.x += acc.x * G *TIMESTEP;
+    vel.y += acc.y * G *TIMESTEP;
+    vel.z += acc.z * G *TIMESTEP;
 
     pos.x += vel.x * TIMESTEP;
     pos.y += vel.y * TIMESTEP;
