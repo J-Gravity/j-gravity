@@ -171,7 +171,7 @@ t_env *setup_env(void)
     t_env *env = (t_env *)calloc(1, sizeof(t_env));
 
     env->mlx = mlx_init();
-    env->win = mlx_new_window(env->mlx, WINDOW_DIM, WINDOW_DIM, "fuckin lit dude");
+    env->win = mlx_new_window(env->mlx, WINDOW_DIM, WINDOW_DIM, "jgravity");
     env->frameind = 0;
     return (env);
 }
