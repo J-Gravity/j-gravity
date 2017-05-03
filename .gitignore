@@ -2,6 +2,9 @@
 norminette/vendor
 norminette/.bundle/config
 
+.DS_Store
+._*
+
 # Object files
 *.o
 *.ko
