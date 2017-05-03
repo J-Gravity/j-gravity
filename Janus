@@ -1,0 +1,5 @@
+normal model: -m repels -m and +m, +m attracts -m and +m
+
+janus model: -m repels +m and attracts -m, +m repels -m and attracts +m
+
+both +m and -m exert ther forces
