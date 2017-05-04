@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/03 13:41:21 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/03 16:48:14 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,32 @@ typedef struct	s_vector
 
 typedef struct	s_body
 {
-	double		x;
-	double		y;
-	double		z;
 	double		mass;
+	t_vector	position;
 	t_vector	velocity;
 }				t_body;
 
-extern	 		**t_body	g_universe;
+typedef struct	s_node
+{
+	t_body		*bodies;
+	s_node		**children;
+	s_node		*parent;
+	size_t		start;
+	size_t		end;
+}				t_octant;
 
-t_body			**octree_divide(char *in);
+typedef struct	s_bounds
+{
+	double		xmax;
+	double		xmin;
+	double		ymax;
+	double		ymin;
+	double		zmax;
+	double		zmin;
+}				t_bounds;
+
+t_octant		*octree_divide(t_octant *root);
+
 char			*barnes_hut();
 
 #endif
