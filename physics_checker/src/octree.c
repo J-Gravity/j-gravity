@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:21:02 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/03 17:17:19 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:28:01 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		createchildren(t_octant *node)
 		node->children[i] = (t_octant*)malloc(sizeof(t_octant) * 1);
 		node->children[i]->parent = node;
 		node->children[i]->bodies = node->bodies;
+		node->children[i]->children = (t_octant**)malloc(sizeof(t_octant*) * 1);
 		i++;
 	}
 }
