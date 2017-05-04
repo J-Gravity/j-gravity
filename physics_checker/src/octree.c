@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:21:02 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/03 17:07:15 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/03 17:17:19 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ void		createchildren(t_octant *node)
 	}
 }
 
+/*while (i < 8)
+  {
+  root->children[i]->start = (root->end / 8) * i;
+  root->children[i]->end = (root->end / 8) * (i + 1) - 1; //end to start for 0 should be 0 to 1/8end -1
+  i++;
+  } */ //rounding fucks up this method I think
+
 t_octant	*octree_divide(t_octant *root)
 {
 	int			i;
@@ -37,12 +44,6 @@ t_octant	*octree_divide(t_octant *root)
 	start = 0;
 	end = root->end / 8;
 	createchildren(root);
-	/*while (i < 8)
-	{
-		root->children[i]->start = (root->end / 8) * i;
-		root->children[i]->end = (root->end / 8) * (i + 1) - 1; //end to start for 0 should be 0 to 1/8end -1
-		i++;
-	} */ //rounding fucks up this method I think
 	while (i < 8)
 	{
 		root->children[i]->start = start;
