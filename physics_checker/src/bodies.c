@@ -45,3 +45,11 @@ t_body		*sortbodies(t_body *bodies)
 			sizeof(t_body), compare_positions);
 	return (bodies);
 }
+
+int64_t		parsenbodies(char *buf)
+{
+	int64_t	ret;
+	
+	memcpy(&ret, buf, sizeof(int64_t));
+	return(ret);
+}
