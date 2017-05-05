@@ -31,6 +31,8 @@ int				main(int argc, char **argv)
 	t_body		*bodies;
 	t_octant	*root;
 
+	buf = malloc(0xFFFFFFFF); //reserve 4 gb of memory
+	free(buf);
 	fd = open(argv[1], O_RDONLY);
 	bodies = (sortbodies(getbodies(fd,
 					parsenbodies(buf))));
