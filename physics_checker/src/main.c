@@ -25,7 +25,7 @@ void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 	node->children = (t_octant**)malloc(sizeof(t_octant*) * 1);
 }
 
-void				simulation(int o)
+void				simulation(int o, t_octant *universe)
 {
 	int		i;
 	char	*buf;
@@ -33,7 +33,7 @@ void				simulation(int o)
 	i = 0;
 	while (i < o)
 	{
-		buf = barnes_hut(root);
+		buf = barnes_hut(universe);
 		write_out(buf); // not happy with this, uses too much memory for our output. Perhaps this needs to be done in smaller steps inside barnes-hut
 		free(buf);
 	}
@@ -60,7 +60,8 @@ int				main(int argc, char **argv)
 	setnode(root, bodies, parsenbodies(buf));
 	free(buf);
 	root = octree_divide(root);
-	buf = barnes_hut(root);
-	write_out(buf);
+	simulation(atoi(argv[2]), root);
+	/*buf = barnes_hut(root);
+	write_out(buf);*/
 	return (0);
 }
