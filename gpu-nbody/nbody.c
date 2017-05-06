@@ -1,94 +1,11 @@
 /*By pmclaugh for J-Gravity, with code from Hands On OpenCL by Simon McIntosh-Smith & Tom Deakin and GPU Gems 3 by NVIDIA*/
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#ifdef __APPLE__
-#include <OpenCL/opencl.h>
-#include <unistd.h>
-#else
-#include <CL/cl.h>
-#endif
+#include "nbody.h"
 #include "err_code.h"
-#include "minilibx_macos/mlx.h"
-#include <string.h>
-
-//pick up device type from compiler command line or from
-//the default type
-#ifndef DEVICE
-#define DEVICE CL_DEVICE_TYPE_DEFAULT
-#endif
-
-
-extern double wtime();       // returns time since some fixed past point (wtime.c)
-extern int output_device_info(cl_device_id );
-
-
-//------------------------------------------------------------------------------
-
-#define STARCOUNT (32768)    // length of vectors a, b, and c
-#define SOLAR_MASS 1.989 * __exp10(30)
-#define FRAMECOUNT 120
-#define WINDOW_FACTOR (2000)
-#define WINDOW_DIM 1000 
-
-typedef struct s_env
-{
-    void    *mlx;
-    void    *win;
-    cl_float4 **frames;
-    int frameind;
-}               t_env;
-
-typedef struct s_context
-{
-    cl_device_id device_id;
-    cl_context context;
-    cl_command_queue commands;
-}               t_context;
-
-char *load_cl_file(char *filename)
-{
-    char *source;
-    int fd;
-
-    source = (char *)calloc(1,2048);
-    fd = open(filename, O_RDONLY);
-    read(fd, source, 2048);
-    return (source);
-}
 
 void print_float4(cl_float4 v)
 {
     printf("x: %f y: %f z: %f w: %f\n", v.x, v.y, v.z, v.w);
 }
-
-cl_float4 rand_star(int xmag, int ymag, int zmag)
-{
-    return((cl_float4){rand() % 1000 * (pow(-1, rand() % 2)) * __exp10(xmag - 3), \
-                        rand() % 1000 * (pow(-1, rand() % 2)) * __exp10(ymag - 3), \
-                        rand() % 1000 * (pow(-1, rand() % 2)) * __exp10(zmag - 3), \
-                        (pow(1, rand() % 2)) * __exp10(9)});
-}
-
-int my_loop_hook(void *param)
-{
-    t_env *env = (t_env*)param;
-
-    mlx_clear_window(env->mlx, env->win);
-    for(int i = 0; i < STARCOUNT; i++)
-    {
-        if (env->frames[env->frameind][i].w > 0)
-            mlx_pixel_put(env->mlx, env->win, env->frames[env->frameind][i].x / WINDOW_FACTOR + 500, env->frames[env->frameind][i].y / WINDOW_FACTOR + 500, 0xFFFFFF);
-        else
-            mlx_pixel_put(env->mlx, env->win, env->frames[env->frameind][i].x / WINDOW_FACTOR + 500, env->frames[env->frameind][i].y / WINDOW_FACTOR + 500, 0x0000FF);
-    }
-    env->frameind = (env->frameind + 1) % FRAMECOUNT;
-    return (0);
-}
-
-
 
 t_context *setup_context(void)
 {
@@ -148,7 +65,7 @@ cl_kernel   make_kernel(t_context *c, char *sourcefile, char *name)
         printf("Error: Failed to build program executable!\n%s\n", err_code(err));
         clGetProgramBuildInfo(p, c->device_id, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
         printf("%s\n", buffer);
-        return NULL;
+        exit(0);
     }
 
     // Create the compute kernel from the program
@@ -157,42 +74,20 @@ cl_kernel   make_kernel(t_context *c, char *sourcefile, char *name)
     return (k);
 }
 
-cl_float4 *make_stars(int n)
-{
-    cl_float4 *stars = (cl_float4 *) calloc(n, sizeof(cl_float4));
-
-    for (int i = 0; i < n; i++)
-        stars[i] = rand_star(5,5,5);
-    return (stars);
-}
-
-t_env *setup_env(void)
-{
-    t_env *env = (t_env *)calloc(1, sizeof(t_env));
-
-    env->mlx = mlx_init();
-    env->win = mlx_new_window(env->mlx, WINDOW_DIM, WINDOW_DIM, "jgravity");
-    env->frameind = 0;
-    return (env);
-}
-
 int main (void)
 {
-    size_t      count;
+    srand ( time(NULL) ); //before we do anything, seed rand() with the current time
     t_context   *context;
-    cl_kernel   k_pairforce;
-    cl_kernel   k_step;
+    cl_kernel   k_nbody;
+    int err;
 
     context = setup_context();
-    k_pairforce = make_kernel(context, "pairforce.cl", "pair_force");
-    printf("made pairforce ok\n");
-    k_step = make_kernel(context, "do_step.cl", "do_step");
-    printf("made step ok\n");
+    k_nbody = make_kernel(context, "pair3.cl", "nbody");
+    printf("made kernel ok\n");
 
     //host-side data
-    cl_float4*      h_p = make_stars(STARCOUNT);
-    cl_float4*      h_a = (cl_float4 *) calloc(STARCOUNT, sizeof(cl_float4));
-    cl_float4*      h_v = (cl_float4 *) calloc(STARCOUNT, sizeof(cl_float4));
+    cl_float4*      h_p = make_stars_sphere(STARCOUNT, 5);
+    cl_float4*      h_v = make_rotational_vels(h_p, STARCOUNT);
     cl_float4**     output_frames = (cl_float4 **) calloc(STARCOUNT, sizeof(cl_float4*));
     for (int i = 0; i < STARCOUNT; i++)
         output_frames[i] = (cl_float4 *) calloc(STARCOUNT, sizeof(cl_float4));
@@ -211,51 +106,62 @@ int main (void)
     d_v_end = clCreateBuffer(context->context, CL_MEM_WRITE_ONLY, sizeof(cl_float4) * STARCOUNT, NULL, NULL);
     d_p_end = clCreateBuffer(context->context, CL_MEM_WRITE_ONLY, sizeof(cl_float4) * STARCOUNT, NULL, NULL);
 
+
+    size_t global = THREADCOUNT;
+    size_t local = GROUPSIZE;
     //hook memory locations to kernel arguments
-    count = STARCOUNT;
-    clSetKernelArg(k_pairforce, 0, sizeof(cl_mem), &d_p_start);
-    clSetKernelArg(k_pairforce, 1, sizeof(cl_mem), &d_a);
-    clSetKernelArg(k_pairforce, 2, sizeof(unsigned int), &count);
-    
-    clSetKernelArg(k_step, 0, sizeof(cl_mem), &d_p_start);
-    clSetKernelArg(k_step, 1, sizeof(cl_mem), &d_p_end);
-    clSetKernelArg(k_step, 2, sizeof(cl_mem), &d_v_start);
-    clSetKernelArg(k_step, 3, sizeof(cl_mem), &d_v_end);
-    clSetKernelArg(k_step, 4, sizeof(cl_mem), &d_a);
-    clSetKernelArg(k_step, 5, sizeof(unsigned int), &count);
+   
+    size_t soften = SOFTENING;
+    size_t timestep = TIME_STEP;
+    float grav = G;
+    size_t count = STARCOUNT;
+    clSetKernelArg(k_nbody, 0, sizeof(cl_mem), &d_p_start);
+    clSetKernelArg(k_nbody, 1, sizeof(cl_mem), &d_p_end);
+    clSetKernelArg(k_nbody, 2, sizeof(cl_mem), &d_v_start);
+    clSetKernelArg(k_nbody, 3, sizeof(cl_mem), &d_v_end);
+    clSetKernelArg(k_nbody, 4, sizeof(cl_mem), &d_a);
+    clSetKernelArg(k_nbody, 5, sizeof(cl_float4) * GROUPSIZE, NULL);
+    clSetKernelArg(k_nbody, 6, sizeof(unsigned int), &soften);
+    clSetKernelArg(k_nbody, 7, sizeof(unsigned int), &timestep);
+    clSetKernelArg(k_nbody, 8, sizeof(float), &grav);
+    clSetKernelArg(k_nbody, 9, sizeof(unsigned int), &count);
 
     //copy over initial data to device locations
     clEnqueueWriteBuffer(context->commands, d_p_start, CL_TRUE, 0, sizeof(cl_float4) * STARCOUNT, h_p, 0, NULL, NULL);
     clEnqueueWriteBuffer(context->commands, d_v_start, CL_TRUE, 0, sizeof(cl_float4) * STARCOUNT, h_v, 0, NULL, NULL);
 
-    //loop
-    /*
-    call pairforce kernel to put values in d_a
-    call step kernel to use d_a to put values in d_p_end and d_v_end
-    copy d_p_end to d_p, d_v_end to d_v, loop (this should be done on device without reading back to host)
-    loop
-    */
     double rtime = wtime();
-    size_t global = count;
     printf("beginning calculation...\n");
     for(int i = 0; i < FRAMECOUNT; i++)
     {
-        cl_event forces;
-        cl_event step;
-        clEnqueueNDRangeKernel(context->commands, k_pairforce, 1, NULL, &global, NULL, 0, NULL, &forces);
-        clEnqueueNDRangeKernel(context->commands, k_step, 1, NULL, &global, NULL, 1, &forces, &step);
-        clEnqueueReadBuffer(context->commands, d_p_end, CL_TRUE, 0, sizeof(cl_float4) * count, output_frames[i], 1, &step, NULL );
-        clEnqueueCopyBuffer(context->commands, d_p_end, d_p_start, 0, 0, sizeof(cl_float4) * STARCOUNT, 1, &step, NULL);
-        clEnqueueCopyBuffer(context->commands, d_v_end, d_v_start, 0, 0, sizeof(cl_float4) * STARCOUNT, 1, &step, NULL);
+        cl_event tick;
+        err = clEnqueueNDRangeKernel(context->commands, k_nbody, 1, NULL, &global, &local, 0, NULL, &tick);
+        checkError(err, "Enqueueing kernel");
+        clEnqueueReadBuffer(context->commands, d_p_end, CL_TRUE, 0, sizeof(cl_float4) * count, output_frames[i], 1, &tick, NULL );
+        clEnqueueCopyBuffer(context->commands, d_p_end, d_p_start, 0, 0, sizeof(cl_float4) * STARCOUNT, 1, &tick, NULL);
+        clEnqueueCopyBuffer(context->commands, d_v_end, d_v_start, 0, 0, sizeof(cl_float4) * STARCOUNT, 1, &tick, NULL);
         clFinish(context->commands);
         if (i % (FRAMECOUNT / 10) == 0)
             printf("done %d of %d\n", i, FRAMECOUNT);
     }
     rtime = wtime() - rtime;
-    printf("hell yeah, it took %lf seconds, which is ~%d ticks/second\n", rtime, (int)(FRAMECOUNT / rtime));
+    printf("hell yeah, it took %lf seconds, which is ~%3f ticks/second\n", rtime, FRAMECOUNT / rtime);
     printf("you'll need to ctrl-C in the shell to close\n");
-    t_env *env = setup_env();
-    env->frames = output_frames;
-    mlx_loop_hook(env->mlx, my_loop_hook, env);
-    mlx_loop(env->mlx);
+    rtime = wtime();
+    for (int i = 0; i < FRAMECOUNT; i++)
+    {
+        frame_to_file(output_frames[i], STARCOUNT, i, "good-");
+    }
+    rtime = wtime() - rtime;
+    printf("flushing to disk took %lf seconds\n", rtime);
+
+    unsigned long test = 0;
+    cl_float4 *readback = file_to_frame("good-0.jgrav", &test);
+
+    print_float4(readback[1]);
+    print_float4(output_frames[0][1]);
+    // t_env *env = setup_env();
+    // env->frames = output_frames;
+    // mlx_loop_hook(env->mlx, my_loop_hook, env);
+    // mlx_loop(env->mlx);
 }

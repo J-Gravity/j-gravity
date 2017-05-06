@@ -9,6 +9,8 @@ LIBS = -lOpenCL -fopenmp
 
 COMMON_DIR = .
 
+SRCS = nbody.c files.c init.c display.c
+
 # Change this variable to specify the device type
 # to the OpenCL device type of choice. You can also
 # edit the variable in the source.
@@ -20,7 +22,7 @@ endif
 # and set up the right compiler flags and libraries
 PLATFORM = $(shell uname -s)
 ifeq ($(PLATFORM), Darwin)
-	LIBS = -framework OpenCL minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
+	LIBS = -framework OpenCL libft.a minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
 endif
 
 all: nbody
@@ -30,7 +32,7 @@ CCFLAGS += -D DEVICE=$(DEVICE)
 minilibx_macos/libmlx.a:
 	make -C minilibx_macos
 
-nbody: nbody.c $(COMMON_DIR)/wtime.c $(COMMON_DIR)/device_info.c minilibx_macos/libmlx.a
+nbody: $(SRCS) $(COMMON_DIR)/wtime.c $(COMMON_DIR)/device_info.c minilibx_macos/libmlx.a
 	$(CC) $^ $(CCFLAGS) $(LIBS) -I $(COMMON_DIR) -o $@
 
 
