@@ -5,7 +5,7 @@
 The J-Gravity project is an attempt to simulate the universe as detailed by the Janus Cosmotological Model.
 
 ##
-The <a href="https://www.savoir-sans-frontieres.com/JPP/telechargeables/English/janus/The%20Janus%20Cosmological%20Model.pdf">Janus Model</a> as been created by M. Jean-Pierre PETIT and M. Gilles d'Agostini, and can be found in at 
+The <a href="https://www.savoir-sans-frontieres.com/JPP/telechargeables/English/janus/The%20Janus%20Cosmological%20Model.pdf">Janus Model</a> as been created by M. Jean-Pierre PETIT and M. Gilles d'Agostini
 
 ##
 The J-Gravity project is an attempt to simulate the universe as detailed by the Janus Cosmotological Model.
