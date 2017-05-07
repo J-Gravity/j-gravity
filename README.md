@@ -1,15 +1,12 @@
 # J-Gravity
-##### The official repo for J-Gravity, a project built by students from 42 Fremont
+##### The official repo for J-Gravity, a project built by students from 42 Silicon Valley
 
-##
 ##
 The J-Gravity project is an attempt to simulate the universe as detailed by the Janus Cosmotological Model.
 
 ##
-##
-The Janus Model as been created by M. Jean-Pierre PETIT and M. Gilles d'Agostini, and can be found in French at http://www.jp-petit.e/Le_Modele_Cosmologique_Janus.pdf or http://www.jp-petit.org/science/JANUS_COSMOLOGICAL_MODEL/Astr_Sp_Sc.pdf in English.
+The <a href="https://www.savoir-sans-frontieres.com/JPP/telechargeables/English/janus/The%20Janus%20Cosmological%20Model.pdf">Janus Model</a> as been created by M. Jean-Pierre PETIT and M. Gilles d'Agostini, and can be found in at 
 
-##
 ##
 The J-Gravity project is an attempt to simulate the universe as detailed by the Janus Cosmotological Model.
 
