@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/04 14:33:10 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/08 15:03:46 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ typedef struct	s_node
 	size_t		start;
 	size_t		end;
 }				t_octant;
-
-typedef struct	s_bounds
-{
-	double		xmax;
-	double		xmin;
-	double		ymax;
-	double		ymin;
-	double		zmax;
-	double		zmin;
-}				t_bounds;
 
 t_octant		*octree_divide(t_octant *root);
 
