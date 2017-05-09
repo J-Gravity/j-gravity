@@ -70,12 +70,12 @@ typedef struct			s_worker
 	t_cell				*acitve_cells;
 	int					cell_cnt;
 	char				*compute_class;
-	int					socket;
+	t_socket			socket;
 }						t_worker;
 
 typedef struct			s_dataset
 {
-	
+
 }						t_dataset;
 
 typedef struct			s_dispatcher
@@ -86,7 +86,7 @@ typedef struct			s_dispatcher
 	t_lst				*cells;
 	int					cell_cnt;
 	int					unassigned_cells;
-	int					server_fd;
+	t_socket			server_sock;
 	t_lst				worker_connections;
 }						t_dispatcher;
 
