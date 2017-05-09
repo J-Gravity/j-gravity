@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/08 17:25:05 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/08 18:43:19 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,15 @@ t_body			*getbodies(int fd, int64_t nbodies);
 
 t_octant		*barnes_hut(t_octant *root);
 
+void			adjustposition(t_octant *newuniverse, size_t index);
+
 #endif
 
 
 /*
- * |_________|
- * |___||___|
- * |__|
- * /
+ *
+ * |__________________|
+ * |______||__________|
+ * |__||__|
+ *
+ */
