@@ -194,6 +194,6 @@ void		coalesce_into_ticks(t_dispatcher *dispatcher);
 *		@param	dispatcher	The dispatcher's main struct
 *		@incomplete	prototype still needs to be flushed out
 */
-void 		save_ouptut(t_dispatcher *dispatcher);
+void 		save_output(t_dispatcher *dispatcher);
 
 #endif
