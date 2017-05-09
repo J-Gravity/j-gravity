@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:00:12 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/08 19:09:41 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/08 19:48:03 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_octant	*endtree(t_octant *universe, size_t prtc)
 	i = 0;
 	while (i < 8)
 	{
-		if (array_len(universe->children, sizeof(t_octant*)) != 8)
+		if (universe->children[0] == 0)
 			break ;
 		if (prtc <= UNIVERSE_END(i) && prtc >= UNIVERSE_START(i))
 		{

@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/08 18:59:25 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/08 19:11:35 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_body
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
+	int			anglesection;
 }				t_body;
 
 typedef struct	s_node
@@ -34,7 +35,6 @@ typedef struct	s_node
 	t_body		*bodies;
 	s_node		**children;
 	s_node		*parent;
-	int			anglesection;
 	t_vector	centerofmass;
 	double		combinedmass;
 	size_t		start;
