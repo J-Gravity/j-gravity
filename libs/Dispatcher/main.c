@@ -24,6 +24,6 @@ int	main(void)
 	launch_simulation(dispatcher); // blocks thread until all workers are done.
 	dump_all_workers_cache(dispatcher);
 	coalesce_into_ticks(dispatcher);
-	save_ouptut(dispatcher);
+	save_output(dispatcher);
 	return (0);
 }
