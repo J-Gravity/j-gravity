@@ -12,6 +12,22 @@
 
 #ifndef DISPATCHER_H
 # define DISPATCHER_H
+# define PORT 4242
+# include <stdio.h>
+# include <sys/socket.h>
+# include <stdlib.h>
+# include <netinet/in.h>
+# include <sys/types.h>
+# include <netdb.h>
+# include <string.h>
+# include <errno.h>
+
+typedef struct			s_lst
+{
+	void 				*data;
+	size_t				data_size;
+	struct s_lst		*next;
+}						t_lst;
 
 typedef struct			s_vect3f
 {
@@ -22,7 +38,7 @@ typedef struct			s_vect3f
 
 typedef	struct			s_socket
 {
-	int					server_socket;
+	int					fd;
 	struct sockaddr_in	*addr;
 	size_t				*addrlen;
 }						t_socket;
@@ -56,6 +72,11 @@ typedef struct			s_worker
 	char				*compute_class;
 	int					socket;
 }						t_worker;
+
+typedef struct			s_dataset
+{
+	
+}						t_dataset;
 
 typedef struct			s_dispatcher
 {
