@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/08 15:03:46 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/08 17:25:05 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef struct	s_node
 	t_body		*bodies;
 	s_node		**children;
 	s_node		*parent;
+	int			anglesection;
+	t_vector	centerofmass;
+	double		combinedmass;
 	size_t		start;
 	size_t		end;
 }				t_octant;
@@ -49,6 +52,13 @@ int				compare_positions(const void *b1, const void *b2);
 t_body			*sortbodies(t_body *bodies);
 t_body			*getbodies(int fd, int64_t nbodies);
 
-char			*barnes_hut(t_octant *root);
+t_octant		*barnes_hut(t_octant *root);
 
 #endif
+
+
+/*
+ * |_________|
+ * |___||___|
+ * |__|
+ * /
