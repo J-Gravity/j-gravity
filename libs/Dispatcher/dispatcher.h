@@ -126,6 +126,14 @@ void		request_dataset(t_dispatcher *dispatcher);
 *		@param	dispatcher	The dispatcher's main struct
 */
 void		divide_dataset(t_dispatcher *dispatcher);
+
+/*
+*		Starts the simulation by informing workers that work units are
+*		ready for computaiton.
+*		@param	dispatcher	The dispatcher's main struct
+*/
+void		launch_simulation(t_dispatcher *dispatcher);
+
 /*
 *	Broadcast a super particle to all the cells for their computaiton
 *	of the next tick (over the network)
@@ -150,6 +158,13 @@ t_cell		*find_appropriate_cell(t_dispatcher *dispatcher, t_body *body);
 *		@param	cell	cell to send it to
 */
 void		send_particle(t_dispatcher *dispatcher, t_body *body, t_cell *cell);
+
+/*
+*	Requests All workers to dump their cache of cell ticks to central storage
+*		@param	dispatcher	The dispatcher's main struct
+*		@return	0 if the request was fullfilled. 1 otherwise
+*/
+int 		dump_all_workers_cache(t_dispatcher *dispatcher);
 
 /*
 *	Requests a worker to dump its cache of cell ticks to central storage
