@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/09 17:36:01 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/10 15:00:56 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void        createchildren(t_octant *node)
 {
     int     i;
+	int		j;
 
     i = 0;
     while (i < 8)
@@ -24,6 +25,12 @@ void        createchildren(t_octant *node)
         node->children[i]->parent = node;
         node->children[i]->bodies = node->bodies;
         node->children[i]->children = (t_octant**)malloc(sizeof(t_octant) * 8);
+		j = 0;
+		while (j < 8)
+		{
+			node->children[i]->children[j] = NULL;
+			j++;
+		}
         i++;
     }
 }
@@ -32,10 +39,14 @@ void        set_center_of_mass(t_octant *node)
 {
     size_t      i;
     t_vector    com;
+	t_vector	com2;
 
     com.x = 0.0;
     com.y = 0.0;
     com.z = 0.0;
+	com2.x = 0.0;
+	com2.y = 0.0;
+	com2.z = 0.0;
     node->combinedmass = 0.0;
     i = node->start;
     while (i <= node->end)
@@ -43,12 +54,18 @@ void        set_center_of_mass(t_octant *node)
         com.x += node->bodies[i].position.x * node->bodies[i].mass;
         com.y += node->bodies[i].position.y * node->bodies[i].mass;
         com.z += node->bodies[i].position.z * node->bodies[i].mass;
+		com2.x += node->bodies[i].position.x;
+		com2.y += node->bodies[i].position.y;
+		com2.z += node->bodies[i].position.z;
         node->combinedmass += bodies[i].mass;
         i++;
     }
     node->centerofmass.x = com.x / node->combinedmass;
     node->centerofmass.y = com.y / node->combinedmass;
     node->centerofmass.z = com.z / node->combinedmass;
+	node->center.x = com2.x / (node->end - node->start + 1);
+	node->center.y = com2.y / (node->end - node->start + 1);
+	node->center.z = com2.z / (node->end - node->start + 1);
 }
 
 void        find_octant(t_octant *cell)
