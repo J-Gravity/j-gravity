@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/11 12:56:02 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/11 13:00:43 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void        createchildren(t_octant *node)
     }
 }
 
-void        get_physical_center(t_octant *node)
+t_vector	get_physical_center(t_octant *node)
 {
     size_t      i;
 	t_vector	center;
