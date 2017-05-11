@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/10 18:24:25 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 20:57:11 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void        find_octant(t_octant *cell)
     while (i <= cell->end)
     {
         x = cell->bodies[i].position.x - cell->center.x;
-        y = cell->bodies[i].position.y - cell->centerofmass.y;
-        z = cell->bodies[i].position.z - cell->centerofmass.z;
+        y = cell->bodies[i].position.y - cell->center.y;
+        z = cell->bodies[i].position.z - cell->center.z;
         if (x >= 0.0 && y >= 0.0 && z >= 0.0)
             cell->bodies[i].octant = 1;
         else if (x < 0.0 && y >= 0.0 && z >= 0.0)
