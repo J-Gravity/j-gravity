@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/10 15:00:56 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/10 18:16:53 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void        set_center_of_mass(t_octant *node)
     size_t      i;
     t_vector    com;
 	t_vector	com2;
+	t_vector	center;
 
     com.x = 0.0;
     com.y = 0.0;
@@ -78,7 +79,7 @@ void        find_octant(t_octant *cell)
     i = cell->start;
     while (i <= cell->end)
     {
-        x = cell->bodies[i].position.x - cell->centerofmass.x;
+        x = cell->bodies[i].position.x - cell->center.x;
         y = cell->bodies[i].position.y - cell->centerofmass.y;
         z = cell->bodies[i].position.z - cell->centerofmass.z;
         if (x >= 0.0 && y >= 0.0 && z >= 0.0)
