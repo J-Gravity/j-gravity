@@ -6,13 +6,14 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:00:12 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 18:38:38 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 19:03:43 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <checker.h>
 #include <pthread.h>
+#include <stdio.h>
 
 #define UNIVERSE_START(X) universe->children[X]->start
 #define UNIVERSE_END(X) universe->children[X]->end
@@ -70,13 +71,14 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 	}
 	adjustposition(newuniverse, prtc); //adjust position based on velocity
 	threadcount--;
+	pthread_exit(0);
 }
 
 t_octant	*barnes_hut(t_octant *universe)
 {
 	t_octant	*newuniverse;
 	size_t		i;
-	pthread_t	threadpool[8];
+	pthread_t	threadpool[32];
 	t_bharg		args;
 
 	i = 0;
@@ -89,13 +91,17 @@ t_octant	*barnes_hut(t_octant *universe)
 	while (i < universe->end)
 	{
 		newuniverse->bodies[i] = universe->bodies[i];
-		if (threadcount < 8)
+		if (threadcount < 32)
 		{
+			dprintf(2, "Thread spinning off\n");
 			args.prtc = i;
 			args.node = endtree(universe, i);
-			pthread_create(&threadpool[threadcount], 0, bh, (void*) &args);
+			pthread_create(&threadpool[threadcount], 0, (void*)bh, (void*)&args);
 			bh(endtree(universe, i), newuniverse, i);
 			i++;
 		}
 	}
+	free(universe);
+	pthread_exit(0);
+	return (newuniverse);
 }

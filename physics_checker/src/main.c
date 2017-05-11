@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/04 14:33:43 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 19:02:47 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ void				simulation(int o, t_octant *universe)
 	i = 0;
 	while (i < o)
 	{
-		buf = barnes_hut(universe);
-		write_out(buf); // not happy with this, uses too much memory for our output. Perhaps this needs to be done in smaller steps inside barnes-hut
-		free(buf);
+		universe = barnes_hut(universe);
 	}
 }
 
