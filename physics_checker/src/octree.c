@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   newoctree.c                                        :+:      :+:    :+:   */
+/*   octree.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/10 18:16:53 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/10 18:24:25 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void        createchildren(t_octant *node)
 {
     int     i;
-	int		j;
 
     i = 0;
     while (i < 8)
@@ -25,12 +24,7 @@ void        createchildren(t_octant *node)
         node->children[i]->parent = node;
         node->children[i]->bodies = node->bodies;
         node->children[i]->children = (t_octant**)malloc(sizeof(t_octant) * 8);
-		j = 0;
-		while (j < 8)
-		{
-			node->children[i]->children[j] = NULL;
-			j++;
-		}
+		node->children[i]->children[0] = 0;
         i++;
     }
 }
