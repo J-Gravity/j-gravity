@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 18:17:03 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/10 18:41:09 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct	s_body
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
-	int			octant;
+	char		octant;
 }				t_body;
 
 typedef struct	s_node
@@ -38,6 +38,13 @@ typedef struct	s_node
 	size_t		start;
 	size_t		end;
 }				t_octant;
+
+typedef struct	s_bharg
+{
+	size_t		prtc;
+	t_octant	*node;
+	t_octant	*universe;
+}				t_bharg;
 
 t_octant		*octree_divide(t_octant *root);
 

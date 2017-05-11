@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:00:12 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/08 19:48:03 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 18:38:38 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 #define UNIVERSE_START(X) universe->children[X]->start
 #define UNIVERSE_END(X) universe->children[X]->end
+
+char	threadcount;
 
 t_octant	*endtree(t_octant *universe, size_t prtc)
 {
@@ -62,19 +64,24 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		while (i < 8)
 		{
 			if (node->parent->children[i] != node)
-			adjustvelocity_nodes(newuniverse, prtc, node->parent->children[i]);
+				adjustvelocity_nodes(newuniverse, prtc, node->parent->children[i]);
 			i++;
 		}
 	}
 	adjustposition(newuniverse, prtc); //adjust position based on velocity
+	threadcount--;
 }
 
 t_octant	*barnes_hut(t_octant *universe)
 {
 	t_octant	*newuniverse;
 	size_t		i;
+	pthread_t	threadpool[8];
+	t_bharg		args;
 
 	i = 0;
+	threadcount = 0;
+	args.universe = newuniverse;
 	newuniverse->start = universe->start;
 	newuniverse->end = universe->end;
 	newuniverse->bodies = (t_body*)malloc(sizeof(t_body) * universe->end);
@@ -82,7 +89,13 @@ t_octant	*barnes_hut(t_octant *universe)
 	while (i < universe->end)
 	{
 		newuniverse->bodies[i] = universe->bodies[i];
-		bh(endtree(universe, i), newuniverse, i);
-		i++;
+		if (threadcount < 8)
+		{
+			args.prtc = i;
+			args.node = endtree(universe, i);
+			pthread_create(&threadpool[threadcount], 0, bh, (void*) &args);
+			bh(endtree(universe, i), newuniverse, i);
+			i++;
+		}
 	}
 }
