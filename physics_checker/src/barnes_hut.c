@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:00:12 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 19:03:43 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 19:11:50 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ t_octant	*barnes_hut(t_octant *universe)
 			args.prtc = i;
 			args.node = endtree(universe, i);
 			pthread_create(&threadpool[threadcount], 0, (void*)bh, (void*)&args);
-			bh(endtree(universe, i), newuniverse, i);
 			i++;
 		}
 	}

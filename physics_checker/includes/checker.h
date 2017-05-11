@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 18:41:09 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/10 20:20:21 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define CHECKER_H
 
 #include <math.h>
+
+# define TIMESTEP 1;
+# define G 0.000000000066742
 
 typedef struct	s_vector
 {
@@ -61,7 +64,9 @@ t_octant		*barnes_hut(t_octant *root);
 
 void			adjustposition(t_octant *newuniverse, size_t index);
 void			adjustvelocity(t_octant *newuniverse, size_t index, t_body body);
-void			adjustvelocity_nodes(t_octant *newuniverse, size_t index, t_octant *node);
+void			adjustvelocity_nodes(t_octant *newuniverse, size_t index, const t_octant *node);
+double			findtotalmass(const t_octant *node);
+t_vector		findcenterofgravity(const t_octant *node);
 
 #endif
 
