@@ -88,8 +88,37 @@ char	*work_unit_serializer(t_work_unit *work_unit)
 		strbjoin(serial, ftob(work_unit->cell.contained_bodies[i]->velocity.x), sizeof(float));
 		strbjoin(serial, ftob(work_unit->cell.contained_bodies[i]->velocity.y), sizeof(float));
 		strbjoin(serial, ftob(work_unit->cell.contained_bodies[i]->velocity.z), sizeof(float));
+		strbjoin(serial, ftob(work_unit->cell.contained_bodies[i]->mass), sizeof(float));
 	}
-	printf("serial->len %d\n", serial->len);
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.position.x), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.position.y), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.position.z), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.velocity.x), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.velocity.y), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.velocity.z), sizeof(float));
+	strbjoin(serial, ftob(work_unit->cell.cell_as_body.mass), sizeof(float));
+	strbjoin(serial, itob(work_unit->adjoining_cells_cnt), sizeof(int));
+	for (int i = 0; i < work_unit->adjoining_cells_cnt; i++)
+	{
+		strbjoin(serial, itob(work_unit->adjoining_cells[i].body_count), sizeof(int));
+		for (int x = 0; x < work_unit->adjoining_cells[i].body_count; x++)
+		{
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->position.x), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->position.y), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->position.z), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->velocity.x), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->velocity.y), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->velocity.z), sizeof(float));
+			strbjoin(serial, ftob(work_unit->adjoining_cells[i].contained_bodies[x]->mass), sizeof(float));
+		}
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.position.x), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.position.y), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.position.z), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.velocity.x), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.velocity.y), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.velocity.z), sizeof(float));
+		strbjoin(serial, ftob(work_unit->adjoining_cells[i].cell_as_body.mass), sizeof(float));
+	}
 	return (serial->data);
 }
 
@@ -101,31 +130,59 @@ t_work_unit	*work_unit_parser(char *str)
 	i = 0;
 	work_unit = malloc(sizeof(t_work_unit));
 	work_unit->compute_class = btoi(str += 4);
-	printf("wu->compute_class = %d\n", work_unit->compute_class);
 	work_unit->cell.body_count = btoi(str += 4);
-	printf("wu->body_count = %d\n", work_unit->cell.body_count);
 	work_unit->cell.contained_bodies = (t_body **)malloc(sizeof(t_body *) * work_unit->cell.body_count);
 	for (int i = 0; i < work_unit->cell.body_count; i++)
 	{
 		work_unit->cell.contained_bodies[i] = (t_body *)malloc(sizeof(t_body));
-		work_unit->cell.contained_bodies[i]->position.x = btoi(str += 4);
-		work_unit->cell.contained_bodies[i]->position.y = btoi(str += 4);
-		work_unit->cell.contained_bodies[i]->position.z = btoi(str += 4);
-		work_unit->cell.contained_bodies[i]->velocity.x = btoi(str += 4);
-		work_unit->cell.contained_bodies[i]->velocity.y = btoi(str += 4);
-		work_unit->cell.contained_bodies[i]->velocity.z = btoi(str += 4);
+		work_unit->cell.contained_bodies[i]->position.x = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->position.y = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->position.z = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->velocity.x = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->velocity.y = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->velocity.z = btof(str += 4);
+		work_unit->cell.contained_bodies[i]->mass = btof(str += 4);
+	}
+	work_unit->cell.cell_as_body.position.x = btof(str += 4);
+	work_unit->cell.cell_as_body.position.y = btof(str += 4);
+	work_unit->cell.cell_as_body.position.z = btof(str += 4);
+	work_unit->cell.cell_as_body.velocity.x = btof(str += 4);
+	work_unit->cell.cell_as_body.velocity.y = btof(str += 4);
+	work_unit->cell.cell_as_body.velocity.z = btof(str += 4);
+	work_unit->cell.cell_as_body.mass = btof(str += 4);
+	work_unit->adjoining_cells_cnt = btoi(str += 4);
+	work_unit->adjoining_cells = (t_cell *)malloc(sizeof(t_cell) * work_unit->adjoining_cells_cnt);
+	for (int i = 0; i < work_unit->adjoining_cells_cnt; i++)
+	{
+		work_unit->adjoining_cells[i].body_count = btoi(str += 4);
+		work_unit->adjoining_cells[i].contained_bodies =
+			(t_body **)malloc(sizeof(t_body *) * work_unit->adjoining_cells[i].body_count);
+		for (int x = 0; x < work_unit->adjoining_cells[i].body_count; x++)
+		{
+			work_unit->adjoining_cells[i].contained_bodies[x] = (t_body *)malloc(sizeof(t_body));
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.x = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.y = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.z = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.x = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.y = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.z = btof(str += 4);
+			work_unit->adjoining_cells[i].contained_bodies[x]->mass = btof(str += 4);
+		}
+		work_unit->adjoining_cells[i].cell_as_body.position.x = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.position.y = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.position.z = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.velocity.x = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.velocity.y = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.velocity.z = btof(str += 4);
+		work_unit->adjoining_cells[i].cell_as_body.mass = btof(str += 4);
 	}
 	return (work_unit);
 }
 
 void	serializer_identifier(char *str)
 {
-	printf("\nserializer id: %d\n", btoi(str));
 	if (btoi(str) == 1)
-	{
-		printf("yes\n");
 		work_unit_parser(str);
-	}
 }
 
 int		main(void)
@@ -136,6 +193,8 @@ int		main(void)
 
 	i = -1;
 	work_unit = malloc(sizeof(t_work_unit));
+	work_unit->compute_class = 555;
+	//.......cells.........//
 	work_unit->cell.body_count = 10;
 	work_unit->cell.contained_bodies = (t_body **)malloc(sizeof(t_body *) * work_unit->cell.body_count);
 	for (int i = 0; i < work_unit->cell.body_count; i++)
@@ -147,118 +206,44 @@ int		main(void)
 		work_unit->cell.contained_bodies[i]->velocity.x = 111111111.222;
 		work_unit->cell.contained_bodies[i]->velocity.y = 222222222.333;
 		work_unit->cell.contained_bodies[i]->velocity.z = 333333333.444;
+		work_unit->cell.contained_bodies[i]->mass = 333333333.444;
 	}
+	work_unit->cell.cell_as_body.position.x = 55;
+	work_unit->cell.cell_as_body.position.y = 55;
+	work_unit->cell.cell_as_body.position.z = 55;
+	work_unit->cell.cell_as_body.velocity.x = 22;
+	work_unit->cell.cell_as_body.velocity.y = 22;
+	work_unit->cell.cell_as_body.velocity.z = 22;
+	work_unit->cell.cell_as_body.mass = 100;
+	//.........adjoining cells........//
 	work_unit->adjoining_cells = malloc(sizeof(t_cell));
-	work_unit->adjoining_cells->contained_bodies = (t_body **)malloc(sizeof(t_body*));
-	work_unit->adjoining_cells->contained_bodies[0] = (t_body *)malloc(sizeof(t_body) *
-			work_unit->cell.body_count);
-	while (++i < work_unit->cell.body_count)
-	{
-		work_unit->adjoining_cells->contained_bodies[0][i].position.x = i;
-		work_unit->adjoining_cells->contained_bodies[0][i].position.y = i;
-		work_unit->adjoining_cells->contained_bodies[0][i].position.z = i;
-		work_unit->adjoining_cells->contained_bodies[0][i].velocity.x = i;
-		work_unit->adjoining_cells->contained_bodies[0][i].velocity.y = i;
-		work_unit->adjoining_cells->contained_bodies[0][i].velocity.z = i;
-	}
-	work_unit->adjoining_cells->cell_as_body.velocity.x = i;
-	work_unit->adjoining_cells->cell_as_body.velocity.y = i;
-	work_unit->adjoining_cells->cell_as_body.velocity.z = i;
 	work_unit->adjoining_cells_cnt = 10;
-	work_unit->compute_class = 555;
+	work_unit->adjoining_cells = (t_cell *)malloc(sizeof(t_cell) * work_unit->adjoining_cells_cnt);
+	for (int i = 0; i < work_unit->adjoining_cells_cnt; i++)
+	{
+		work_unit->adjoining_cells[i].body_count = 10;
+		work_unit->adjoining_cells[i].contained_bodies =
+			(t_body **)malloc(sizeof(t_body *) * work_unit->adjoining_cells[i].body_count);
+		for (int x = 0; x < work_unit->adjoining_cells[i].body_count; x++)
+		{
+			work_unit->adjoining_cells[i].contained_bodies[x] = (t_body *)malloc(sizeof(t_body));
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.x = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.y = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->position.z = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.x = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.y = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->velocity.z = i * x;
+			work_unit->adjoining_cells[i].contained_bodies[x]->mass = i * x;
+		}
+		work_unit->adjoining_cells->cell_as_body.position.x = i;
+		work_unit->adjoining_cells->cell_as_body.position.y = i;
+		work_unit->adjoining_cells->cell_as_body.position.z = i;
+		work_unit->adjoining_cells->cell_as_body.velocity.x = i;
+		work_unit->adjoining_cells->cell_as_body.velocity.y = i;
+		work_unit->adjoining_cells->cell_as_body.velocity.z = i;
+		work_unit->adjoining_cells->cell_as_body.mass = i;
+	}
 	serial_str = work_unit_serializer(work_unit);
 	serializer_identifier(serial_str);
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int		main(void)
-{
-	int			i;
-	int			body_ct;
-	t_worker	*worker;
-
-	i = -1;
-	body_ct = 10;
-	worker = malloc(sizeof(t_worker));
-	worker->active_cells = malloc(sizeof(t_cell));
-	worker->active_cells->contained_bodies = (t_body **)malloc(sizeof(t_body*));
-	worker->active_cells->contained_bodies[0] = (t_body *)malloc(sizeof(t_body) * body_ct);
-	while (++i < body_ct)
-	{
-		worker->active_cells->contained_bodies[0][i].position.x = i;
-		worker->active_cells->contained_bodies[0][i].position.y = i;
-		worker->active_cells->contained_bodies[0][i].position.z = i;
-		worker->active_cells->contained_bodies[0][i].velocity.x = i;
-		worker->active_cells->contained_bodies[0][i].velocity.y = i;
-		worker->active_cells->contained_bodies[0][i].velocity.z = i;
-	}
-		worker->active_cells->cell_as_body.velocity.x = i;
-		worker->active_cells->cell_as_body.velocity.y = i;
-		worker->active_cells->cell_as_body.velocity.z = i;
-}
-*/
-
-/*
-int		main(void)
-{
-	t_dispatcher	*dispatcher;
-
-	dispatcher = malloc(sizeof(t_dispatcher));
-	dispatcher->workers = malloc(sizeof(t_lst));
-	dispatcher->data = malloc(sizeof(t_dataset));
-	dispatcher->cells = malloc(sizeof(t_lst));
-	return (0);
-}
-*/
