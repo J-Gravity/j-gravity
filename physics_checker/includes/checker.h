@@ -55,6 +55,7 @@ size_t			array_len(void *ptr, size_t datasize);
 int64_t			parsenbodies(char *buf);
 
 double			finddist(t_vector pos);
+# define DIST(X, Y) finddist(x) - finddist(y)
 
 int				compare_positions(const void *b1, const void *b2);
 t_body			*sortbodies(t_body *bodies);
