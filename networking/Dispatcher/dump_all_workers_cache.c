@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coalesce_into_ticks.c                              :+:      :+:    :+:   */
+/*   dump_all_workers_cache.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: scollet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/09 22:40:13 by scollet           #+#    #+#             */
-/*   Updated: 2017/05/09 22:40:14 by scollet          ###   ########.fr       */
+/*   Created: 2017/05/11 19:53:24 by scollet           #+#    #+#             */
+/*   Updated: 2017/05/11 19:53:25 by scollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dispatcher.h"
+#include "dispatcher.c"
 
-void  coalesce_into_ticks(t_dispatcher *dispatcher)
+int   dump_all_workers_cache(t_dispatcher *dispatcher)
 {
 
-  /*
-  *   TODO : Coalesce all cells into one tick;
-  *   Q : What is the result?;
-  */
+    /*
+    *   TODO : Request all workers empty cache;
+    */
 
-  return ;
+    while (dispatcher->workers->next)
+    {
+      
+    }
 }

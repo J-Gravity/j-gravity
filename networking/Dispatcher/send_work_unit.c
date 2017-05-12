@@ -14,6 +14,12 @@
 
 int   send_work_unit(t_dispatcher *dispatcher, t_worker *worker)
 {
-  
-  return (0);
+  if ((worker) && (*worker))
+  {
+    if (0 > (write(worker.socket.fd, dispatcher->work_units,
+      dispatcher->work_units.cell.body_count)))
+      return (1);
+    return (0);
+  }
+  return (1);
 }

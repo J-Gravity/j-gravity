@@ -12,36 +12,29 @@
 
 #include "dispatcher.h"
 
-void  connect_workers(t_dispatcher *dispatcher)
+void  connect_workers(t_dispatcher *dispatcher, t_lst **workers)
 {
   int             worker_fd;
-  pid_t           pid;
-  t_dispatcher    fd;
-  struct addrinfo addr;
-
+  pthread_t       *work_thread;
   /*
   *   TODO : Connect dispatcher to workers via TCP;
+  *   : add worker to linked list;
+  *   : update worker socket;
+  *   : repeat for next worker;
   */
 
-  memset(&addr, 0, sizeof(addr));
-  while (some value has not been met)
+  while (workers->next)
   {
-    if (0 > (worker_fd = accept(dispatcher.server_fd, 0, 0)))
+    if (0 > (*workers.socket.fd = accept(dispatcher.server_fd, 0, 0)))
     {
       if (EINTR == errno)
         continue ;
-      ft_error();
+      break ;
     }
-    if (0 > (pid = fork()))
-      ft_error();
-    else if (0 == pid)
-    {
-      close(dispatcher.server_fd);
-      while (dispatcher->worker_connections->next)
-        dispatcher->worker_connections->next = dispatcher->worker_connections;
-
-    }
-    else
-      close(worker_fd);
+    //add worker to linked list
+    dispatcher->workers = *workers;
+    dispatcher->workers->next = workers->next;
+    *workers = workers->next;
   }
+  return ;
 }
