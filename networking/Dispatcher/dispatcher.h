@@ -6,7 +6,7 @@
 /*   By: cyildiri <cyildiri@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 19:43:37 by cyildiri          #+#    #+#             */
-/*   Updated: 2017/05/11 15:19:08 by ssmith           ###   ########.fr       */
+/*   Updated: 2017/05/05 21:22:28 by cyildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,37 +62,32 @@ typedef struct			s_work_unit
 	t_cell				cell;
 	t_cell				*adjoining_cells;
 	int					adjoining_cells_cnt;
-	int					compute_class;
+	char				*compute_class;
 }						t_work_unit;
 
 typedef struct			s_worker
 {
-	t_cell				*active_cells;
+	t_cell				*acitve_cells;
 	int					cell_cnt;
 	char				*compute_class;
-	int					socket;
+	t_socket			socket;
 }						t_worker;
 
 typedef struct			s_dataset
 {
-	
-}						t_dataset;
 
-typedef struct			s_serial
-{
-	char				*data;
-	int					len;
-}						t_serial;
+}						t_dataset;
 
 typedef struct			s_dispatcher
 {
 	t_lst				*workers;
 	int					worker_cnt;
-	t_dataset			*data;
+	t_dataset			*dataset;
 	t_lst				*cells;
+	t_lst				*work_units;
 	int					cell_cnt;
 	int					unassigned_cells;
-	int					server_fd;
+	t_socket			server_sock;
 	t_lst				worker_connections;
 }						t_dispatcher;
 
@@ -114,24 +109,53 @@ t_socket	setup_server_socket(int port);
 void		send_to_worker();
 
 /*
-*	Sets up TCP connections with all the workers
+*	Adds a worker to the workers linked list for each worker and populate
+*	it's socket struct with the fd for the socket connection
 *		@param	dispatcher	The dispatcher's main struct
+*		@param	workers	A pointer to the linked list of workers
 */
-void		connect_workers(t_dispatcher *dispatcher);
+void		connect_workers(t_dispatcher *dispatcher, t_lst **workers);
 
 /*
-*	Get the next dataset from the web server and store it in the
+*	Get the next dataset (t_dataset) from the web server and store it in the
 *	dispatcher struct
 *		@param	dispatcher	The dispatcher's main struct
-*		@return all the n-body starting dataset (pos,vel,mass)
+*		@param	init_data	Pointer to the initial dataset ptr in the dispatcher
+*							struct
 */
-void		request_dataset(t_dispatcher *dispatcher);
+void		request_dataset(t_dispatcher *dispatcher, t_dataset **init_data);
 
 /*
-*	Divide up the dataset into work_units and assign them a compute_class
+*	Divide up the dataset into work_units and store them in the
+*		@optimization	Assign them a compute_class
+*		@param	dispatcher	The dispatcher's main struct
+*		@param	dataset	The dataset that would be divided into work_units
+*		@param	work_units	Linked list of the work units
+*/
+void		divide_dataset(t_dispatcher *dispatcher, t_dataset *init_data,
+			t_lst **work_units);
+
+/*
+*		Starts the simulation by informing workers that work units are
+*		ready for computaiton.
 *		@param	dispatcher	The dispatcher's main struct
 */
-void		divide_dataset(t_dispatcher *dispatcher);
+void		launch_simulation(t_dispatcher *dispatcher);
+
+/*
+*	Coalesce all cells for each tick into a full tick
+*		@param	dispatcher	The dispatcher's main struct
+*		@incomplete	prototype still needs to be flushed out
+*/
+void		coalesce_into_ticks(t_dispatcher *dispatcher);
+
+/*
+*	Save the ticks to the appropriate file format
+*		@param	dispatcher	The dispatcher's main struct
+*		@incomplete	prototype still needs to be flushed out
+*/
+void 		save_output(t_dispatcher *dispatcher);
+
 /*
 *	Broadcast a super particle to all the cells for their computaiton
 *	of the next tick (over the network)
@@ -158,6 +182,13 @@ t_cell		*find_appropriate_cell(t_dispatcher *dispatcher, t_body *body);
 void		send_particle(t_dispatcher *dispatcher, t_body *body, t_cell *cell);
 
 /*
+*	Requests All workers to dump their cache of cell ticks to central storage
+*		@param	dispatcher	The dispatcher's main struct
+*		@return	0 if the request was fullfilled. 1 otherwise
+*/
+int 		dump_all_workers_cache(t_dispatcher *dispatcher);
+
+/*
 *	Requests a worker to dump its cache of cell ticks to central storage
 *		@param	dispatcher	The dispatcher's main struct
 *		@param	worker	The worker that the request will be sent to
@@ -172,19 +203,5 @@ int 		request_cache_dump(t_dispatcher *dispatcher, t_worker *worker);
 *		@return	0 if the request was fullfilled. 1 otherwise
 */
 int			send_work_unit(t_dispatcher *dispatcher, t_worker *worker);
-
-/*
-*	Coalesce all cells for each tick into a full tick
-*		@param	dispatcher	The dispatcher's main struct
-*		@incomplete	prototype still needs to be flushed out
-*/
-void		coalesce_into_ticks(t_dispatcher *dispatcher);
-
-/*
-*	Save the ticks to the appropriate file format
-*		@param	dispatcher	The dispatcher's main struct
-*		@incomplete	prototype still needs to be flushed out
-*/
-void 		save_ouptut(t_dispatcher *dispatcher);
 
 #endif
