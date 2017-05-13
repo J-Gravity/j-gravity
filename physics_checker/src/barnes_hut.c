@@ -83,10 +83,21 @@ t_octant	*barnes_hut(t_octant *universe)
 
 	i = 0;
 	threadcount = 0;
+	newuniverse = (t_octant*)malloc(sizeof(t_octant) * 1);
+	if (newuniverse == 0)
+	{
+		dprintf(2, "ERROR NOT ENOUGH MEMORY TO ALLOCATE NEW UNIVERSE IN BARNES_HUT LINE 86\n");
+		exit(0);
+	}
 	args.universe = newuniverse;
 	newuniverse->start = universe->start;
 	newuniverse->end = universe->end;
 	newuniverse->bodies = (t_body*)malloc(sizeof(t_body) * universe->end + 1);
+	if (newuniverse->bodies == 0)
+	{
+		dprintf(2, "ERROR NOT ENOUGH MEMORY TO ALLOCATE NEW UNIVERSE IN BARNES_HUT LINE 95\n");
+		exit(0);
+	}
 	//multithread this
 	while (i <= universe->end)
 	{

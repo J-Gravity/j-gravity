@@ -12,6 +12,7 @@
 
 #include "checker.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void        createchildren(t_octant *node)
 {
@@ -21,6 +22,11 @@ void        createchildren(t_octant *node)
     while (i < 8)
     {
         node->children[i] = (t_octant*)malloc(sizeof(t_octant));
+		if (node->children[i] == 0)
+		{
+			dprintf(2, "MALLOC ERROR FOR OCTANT DIVIDE\n");
+			exit(0);
+		}
         node->children[i]->parent = node;
         node->children[i]->bodies = node->bodies;
         node->children[i]->children = (t_octant**)malloc(sizeof(t_octant) * 8);
