@@ -154,12 +154,27 @@ void        set_startend(t_octant *cell)
     }
 }
 
+size_t		getdepth(t_octant *root)
+{
+	size_t	depth;
+	
+	depth = 0;
+	while (root->parent)
+	{
+		root = root->parent;
+		depth++;
+	}
+	return (depth);
+}
+
 t_octant    *octree_divide(t_octant *root)
 {
     int i;
 
     if (root->end < root->start)
         return (NULL);
+	if (50 == getdepth(root))
+		return (1);
     createChildren(root);
     find_octant(root);
     qsort(root->bodies + (root->start) * sizeof(t_body), (root->end - root->start + 1), sizeof(t_body), compare_octant);
