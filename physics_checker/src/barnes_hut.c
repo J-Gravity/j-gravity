@@ -92,7 +92,7 @@ t_octant	*barnes_hut(t_octant *universe)
 	args.universe = newuniverse;
 	newuniverse->start = universe->start;
 	newuniverse->end = universe->end;
-	newuniverse->bodies = (t_body*)malloc(sizeof(t_body) * universe->end + 1);
+	newuniverse->bodies = (t_body*)malloc(sizeof(t_body) * (universe->end + 1));
 	if (newuniverse->bodies == 0)
 	{
 		dprintf(2, "ERROR NOT ENOUGH MEMORY TO ALLOCATE NEW UNIVERSE IN BARNES_HUT LINE 95\n");
