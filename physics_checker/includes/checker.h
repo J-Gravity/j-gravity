@@ -40,6 +40,8 @@ typedef struct	s_node
 	s_node		*parent;
 	size_t		start;
 	size_t		end;
+	char		corner;
+	t_vector	potential;
 }				t_octant;
 
 typedef struct	s_bharg

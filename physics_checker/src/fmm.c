@@ -5,7 +5,8 @@
 
 */
 
-t_octant	*fmm(t_octant *universe)
+
+t_octant	*fmm_inner(t_octant *universe)
 {
 	/*t_octant	*newuniverse;
 	
@@ -36,31 +37,39 @@ t_octant	*fmm(t_octant *universe)
 		while (i < 8)
 		{
 			if (universe->children[i].corner == 1)
-			{
-				fmm(universe->children[i]);
-				break ;
-			}
+				return (fmm(universe->children[i]));
 			i++;
 		}
-		return (universe);
 	}
-	//apply the potential of the far nodes to this one.
-	applypotential(universe, computepotential(universe->parent);
-	//if the node is childless do a direct compare with it's neighbors and exit out.
-	if (universe->children[0] == 0)
-	{
-		directcompare(universe);
-		return (universe);
-	}
+	//apply the potential of the far nodes to this one. This is basically just calculating the net effect of the force vectors on it.
+	//its basically an attribute of the node that will later get applied to the velocities of all the particles in it.
+	computepotential_in(universe->parent);
 	//if we have children move to the far corner
-	while (i < 8)
+	if (universe->children[0] != 0)
 	{
-		if (universe->children[i].corner == 1)
+		while (i < 8)
 		{
-			fmm(universe->children[i]);
-			break ;
+			if (universe->children[i].corner == 1)
+				return (fmm(universe->children[i]));
+			i++;
 		}
-		i++;
 	}
-	return (universe);
+	//if the node is childless do a direct compare and pulse back.
+	directcompare(universe);
+	return (fmm_outer(universe);
+}
+
+t_octant	*fmm_outer(t_octant *universe)
+{
+		//same as fmm_inner except instead of moving from the inside to the far corners we move from the far corners in.
+}
+
+void	applypotential(t_octant *universe)
+{
+	//move to the leaves of the tree and then apply the nodes potential to the particles inside and do direct compares
+}
+
+void	directcompare(t_octant *universe)
+{
+	//directly compare the particles of all nodes that share roots parents.
 }
