@@ -30,7 +30,7 @@ void        createchildren(t_octant *node)
         node->children[i]->parent = node;
         node->children[i]->bodies = node->bodies;
         node->children[i]->children = (t_octant**)malloc(sizeof(t_octant) * 8);
-	node->children[i]->children[0] = 0;
+		node->children[i]->children[0] = 0;
         i++;
     }
 }
