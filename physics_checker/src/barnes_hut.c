@@ -46,6 +46,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 {
 	size_t	i;
 
+
 	i = node->parent->start;
 	//compare against all particles in current node and neighbor nodes
 	while (i <= node->parent->end)
@@ -98,6 +99,7 @@ t_octant	*barnes_hut(t_octant *universe)
 		dprintf(2, "ERROR NOT ENOUGH MEMORY TO ALLOCATE NEW UNIVERSE IN BARNES_HUT LINE 95\n");
 		exit(0);
 	}
+	//if creating a new universe proves to be too memory intensive we can do adjust_position on all the particles in a big loop at the end and not allocate a new universe
 	//multithread this
 	while (i <= universe->end)
 	{
