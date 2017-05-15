@@ -16,7 +16,8 @@ t_octant	*fmm(t_octant *universe)
 	//derp we don't need to do this. To explain BH needs to create a new universe because it relies on the particles interacting in their unchanged state and bh moves them. Keeping it here for explainatory purposes.
 	//actually now that I think about it having the newuniverse makes multithreading a bit cleaner although for this the only part that really needs to be threaded is the directcompare at the end
 	
-	//the algorithm should move out like the petals of an eight petaleed flower, moving diagonally outwards and away
+	//the algorithm should move out like the petals of an eight petaled flower, moving diagonally outwards and away
+	//one needed change for the octant generation code is that we need to keep track of which octant of the set is the far corner a.k.a which one moves away from the other octants
 	char	i;
 	
 	i = 0;
