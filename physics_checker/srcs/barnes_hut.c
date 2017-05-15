@@ -6,12 +6,12 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:00:12 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 19:11:50 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/15 15:52:56 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <checker.h>
+#include "checker.h"
 #include <pthread.h>
 #include <stdio.h>
 
@@ -79,6 +79,7 @@ t_octant	*barnes_hut(t_octant *universe)
 {
 	t_octant	*newuniverse;
 	size_t		i;
+	int			threadcount;
 	pthread_t	threadpool[32];
 	t_bharg		args;
 
@@ -104,7 +105,7 @@ t_octant	*barnes_hut(t_octant *universe)
 	while (i <= universe->end)
 	{
 		//for debug
-		dprintf(2, "prtc: %p with mass %lf\n", universe->bodies[i], universe->bodies[i].mass);
+//		dprintf(2, "prtc: %p with mass %lf\n", (void*)(universe->bodies[i]), universe->bodies[i].mass);
 		newuniverse->bodies[i] = universe->bodies[i];
 		if (threadcount < 32)
 		{

@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 20:20:21 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/15 15:49:48 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define CHECKER_H
 
 #include <math.h>
+#include <inttypes.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 # define TIMESTEP 1;
 # define G 0.000000000066742
@@ -33,14 +38,14 @@ typedef struct	s_body
 	char		octant;
 }				t_body;
 
-typedef struct	s_node
+typedef struct		s_node
 {
-	t_body		*bodies;
-	s_node		**children;
-	s_node		*parent;
-	size_t		start;
-	size_t		end;
-}				t_octant;
+	t_body			*bodies;
+	struct s_node	**children;
+	struct s_node	*parent;
+	size_t			start;
+	size_t			end;
+}					t_octant;
 
 typedef struct	s_bharg
 {
@@ -49,7 +54,7 @@ typedef struct	s_bharg
 	t_octant	*universe;
 }				t_bharg;
 
-t_octant		*octree_divide(t_octant *root);
+void			octree_divide(t_octant *root);
 
 size_t			array_len(void *ptr, size_t datasize);
 int64_t			parsenbodies(char *buf);

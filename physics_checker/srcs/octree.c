@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/11 13:00:43 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/15 16:34:53 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void        find_octant(t_octant *cell)
     double  	y;
     double  	z;
    
-	center = get_physical_center(node);
+	center = get_physical_center(cell);
     i = cell->start;
     while (i <= cell->end)
     {
@@ -173,15 +173,17 @@ size_t		getdepth(t_octant *root)
 	return (depth);
 }
 
-t_octant    *octree_divide(t_octant *root)
+void		octree_divide(t_octant *root)
 {
     int i;
 
-    if (root->end < root->start)
-        return (NULL);
+    if (root->end <= root->start)
+		return ;
+	/*
 	if (50 == getdepth(root))
-		return (1);
-    createChildren(root);
+		return ;
+		*/
+    createchildren(root);
     find_octant(root);
     qsort(root->bodies + (root->start) * sizeof(t_body), (root->end - root->start + 1), sizeof(t_body), compare_octant);
     set_startend(root);
@@ -191,5 +193,4 @@ t_octant    *octree_divide(t_octant *root)
         octree_divide(root->children[i]);
         i++;
     }
-    return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/10 19:02:47 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/15 15:49:58 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 void				simulation(int o, t_octant *universe)
 {
 	int		i;
-	char	*buf;
 	
 	i = 0;
 	while (i < o)
@@ -44,6 +43,7 @@ int				main(int argc, char **argv)
 	t_body		*bodies;
 	t_octant	*root;
 
+	(void)argc;
 	buf = malloc(0xFFFFFFFF); //reserve 4 gb of memory
 	if (!buf)
 	{
@@ -57,9 +57,7 @@ int				main(int argc, char **argv)
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
 	setnode(root, bodies, parsenbodies(buf));
 	free(buf);
-	root = octree_divide(root);
+	octree_divide(root);
 	simulation(atoi(argv[2]), root);
-	/*buf = barnes_hut(root);
-	write_out(buf);*/
 	return (0);
 }
