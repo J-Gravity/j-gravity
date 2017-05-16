@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/16 15:31:47 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/16 16:20:31 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #define M newuniverse->bodies[prtc].mass
 #define PARTICLE newuniverse->bodies[prtc]
 #define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
-#define TIMESTEP 10
 
 double		findtotalmass(const t_octant *node)
 {

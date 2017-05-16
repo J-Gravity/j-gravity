@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/15 16:34:53 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/16 16:27:42 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void		octree_divide(t_octant *root)
 	if (50 == getdepth(root))
 		return ;
 		*/
+	printf("%lf\n", root->bodies[root->start].position.x);
     createchildren(root);
     find_octant(root);
     qsort(root->bodies + (root->start) * sizeof(t_body), (root->end - root->start + 1), sizeof(t_body), compare_octant);
