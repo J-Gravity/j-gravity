@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/15 15:50:29 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/16 15:31:47 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define M newuniverse->bodies[prtc].mass
 #define PARTICLE newuniverse->bodies[prtc]
 #define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
+#define TIMESTEP 10
 
 double		findtotalmass(const t_octant *node)
 {
@@ -63,9 +64,9 @@ void		adjustvelocity(t_octant *newuniverse, size_t prtc, t_body body)
 	f.x = F_S(x);
 	f.y = F_S(y);
 	f.z = F_S(z);
-	PARTICLE.velocity.x = (f.x)/(PARTICLE.mass);
-	PARTICLE.velocity.y = (f.y)/(PARTICLE.mass);
-	PARTICLE.velocity.z = (f.z)/(PARTICLE.mass);
+	PARTICLE.velocity.x += (f.x)/(PARTICLE.mass) * TIMESTEP;
+	PARTICLE.velocity.y += (f.y)/(PARTICLE.mass) * TIMESTEP;
+	PARTICLE.velocity.z += (f.z)/(PARTICLE.mass) * TIMESTEP;
 }
 
 void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *node)
@@ -78,7 +79,14 @@ void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *n
 	f.x = F_S(x);
 	f.y = F_S(y);
 	f.z = F_S(z);
-	PARTICLE.velocity.x = (f.x)/(PARTICLE.mass);
-	PARTICLE.velocity.y = (f.y)/(PARTICLE.mass);
-	PARTICLE.velocity.z = (f.z)/(PARTICLE.mass);
+	PARTICLE.velocity.x += (f.x)/(PARTICLE.mass) * TIMESTEP;
+	PARTICLE.velocity.y += (f.y)/(PARTICLE.mass) * TIMESTEP;
+	PARTICLE.velocity.z += (f.z)/(PARTICLE.mass) * TIMESTEP;
+}
+
+void		adjustposition(t_octant *newuniverse, size_t prtc)
+{
+	PARTICLE.position.x += PARTICLE.velocity.x * TIMESTEP;
+	PARTICLE.position.y += PARTICLE.velocity.y * TIMESTEP;
+	PARTICLE.position.z += PARTICLE.velocity.z * TIMESTEP;
 }
