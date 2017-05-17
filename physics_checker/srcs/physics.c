@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/16 19:07:02 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 00:29:01 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ t_vector	findcenterofgravity(const t_octant *node)
     double      combinedmass;
 	size_t		i;
 
-    center.x = 0.0;
-    center.y = 0.0;
-    center.z = 0.0;
+	center = (t_vector){0.0, 0.0, 0.0};
     combinedmass = 0.0;
     i = node->start;
     while (i <= node->end)

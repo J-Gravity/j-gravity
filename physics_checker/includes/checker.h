@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/16 19:08:01 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 00:19:57 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 
-# define TIMESTEP 0.1
+# define TIMESTEP 100000000.0
 # define G 0.000000000066742
 
 typedef struct	s_vector
@@ -32,9 +32,11 @@ typedef struct	s_vector
 
 typedef struct	s_body
 {
+	size_t		id;
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
+	t_vector	force;
 	char		octant;
 }				t_body;
 
@@ -66,7 +68,7 @@ int				compare_positions(const void *b1, const void *b2);
 t_body			*sortbodies(t_body *bodies);
 t_body			*getbodies(int fd, int64_t nbodies);
 
-t_octant		*barnes_hut(t_octant *root);
+void			barnes_hut(t_octant *root);
 
 void			adjustposition(t_octant *newuniverse, size_t index);
 void			adjustvelocity(t_octant *newuniverse, size_t index, t_body body);
