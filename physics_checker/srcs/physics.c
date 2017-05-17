@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 00:29:01 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 15:23:32 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define M newuniverse->bodies[prtc].mass
 #define PARTICLE newuniverse->bodies[prtc]
-#define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
+//#define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
 
 double		findtotalmass(const t_octant *node)
 {
@@ -58,12 +58,12 @@ void		adjustvelocity(t_octant *newuniverse, size_t prtc, t_body body)
 {
 	t_vector	f;
 
-	f.x = F_S(x);
-	f.y = F_S(y);
-	f.z = F_S(z);
-	PARTICLE.velocity.x += (f.x)/(PARTICLE.mass) * TIMESTEP;
-	PARTICLE.velocity.y += (f.y)/(PARTICLE.mass) * TIMESTEP;
-	PARTICLE.velocity.z += (f.z)/(PARTICLE.mass) * TIMESTEP;
+	f.x = FORCE3D(x, PARTICLE.position, body.position);
+	f.y = FORCE3D(y, PARTICLE.position, body.position);
+	f.z = FORCE3D(z, PARTICLE.position, body.position);
+	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
+	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
+	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 }
 
 void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *node)
@@ -73,12 +73,12 @@ void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *n
 
 	body.mass = findtotalmass(node);
 	body.position = findcenterofgravity(node);
-	f.x = F_S(x);
-	f.y = F_S(y);
-	f.z = F_S(z);
-	PARTICLE.velocity.x += (f.x)/(PARTICLE.mass) * TIMESTEP;
-	PARTICLE.velocity.y += (f.y)/(PARTICLE.mass) * TIMESTEP;
-	PARTICLE.velocity.z += (f.z)/(PARTICLE.mass) * TIMESTEP;
+	f.x = FORCE3D(x, PARTICLE.position, body.position);
+	f.y = FORCE3D(y, PARTICLE.position, body.position);
+	f.z = FORCE3D(z, PARTICLE.position, body.position);
+	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
+	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
+	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 }
 
 void		adjustposition(t_octant *newuniverse, size_t prtc)

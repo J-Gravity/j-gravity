@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 00:19:57 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 15:33:40 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 
 # define TIMESTEP 100000000.0
 # define G 0.000000000066742
+
+# define ABS(x) (x < 0 ? -x : x)
+#define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
+#define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
 
 typedef struct	s_vector
 {
@@ -62,7 +66,8 @@ size_t			array_len(void *ptr, size_t datasize);
 int64_t			parsenbodies(char *buf);
 
 double			finddist(t_vector pos);
-# define DIST(X, Y) finddist(x) - finddist(y)
+double			vectordist(t_vector p1, t_vector p2);
+# define DIST(X, Y) vectordist(X, Y) 
 
 int				compare_positions(const void *b1, const void *b2);
 t_body			*sortbodies(t_body *bodies);
