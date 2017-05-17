@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 15:33:40 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 15:35:56 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ABS(x) (x < 0 ? -x : x)
 #define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
 #define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
+//FORCE3D is in the form vector component, body being acted upon, source body
 
 typedef struct	s_vector
 {
