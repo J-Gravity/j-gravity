@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/16 16:20:31 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/16 19:07:02 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ t_vector	findcenterofgravity(const t_octant *node)
     i = node->start;
     while (i <= node->end)
     {
-        center.x += node->bodies[i].position.x * node->bodies[i].mass;
-        center.y += node->bodies[i].position.y * node->bodies[i].mass;
-        center.z += node->bodies[i].position.z * node->bodies[i].mass;
+        center.x += (node->bodies[i].position.x * node->bodies[i].mass);
+        center.y += (node->bodies[i].position.y * node->bodies[i].mass);
+        center.z += (node->bodies[i].position.z * node->bodies[i].mass);
         combinedmass += node->bodies[i].mass;
     }
     center.x /= combinedmass;
@@ -85,7 +85,7 @@ void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *n
 
 void		adjustposition(t_octant *newuniverse, size_t prtc)
 {
-	PARTICLE.position.x += PARTICLE.velocity.x * TIMESTEP;
-	PARTICLE.position.y += PARTICLE.velocity.y * TIMESTEP;
-	PARTICLE.position.z += PARTICLE.velocity.z * TIMESTEP;
+	PARTICLE.position.x += (PARTICLE.velocity.x * TIMESTEP);
+	PARTICLE.position.y += (PARTICLE.velocity.y * TIMESTEP);
+	PARTICLE.position.z += (PARTICLE.velocity.z * TIMESTEP);
 }

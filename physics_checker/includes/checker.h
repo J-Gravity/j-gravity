@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/15 15:49:48 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/16 19:08:01 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 
-# define TIMESTEP 1;
+# define TIMESTEP 0.1
 # define G 0.000000000066742
 
 typedef struct	s_vector
