@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 15:35:56 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 16:04:40 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ t_body			*getbodies(int fd, int64_t nbodies);
 
 void			barnes_hut(t_octant *root);
 
-void			adjustposition(t_octant *newuniverse, size_t index);
-void			adjustvelocity(t_octant *newuniverse, size_t index, t_body body);
-void			adjustvelocity_nodes(t_octant *newuniverse, size_t index, const t_octant *node);
+void			adjustposition(t_octant **newuniverse, size_t index);
+void			adjustvelocity(t_octant **newuniverse, size_t index, t_body body);
+void			adjustvelocity_nodes(t_octant **newuniverse, size_t index, const t_octant *node);
 double			findtotalmass(const t_octant *node);
 t_vector		findcenterofgravity(const t_octant *node);
 

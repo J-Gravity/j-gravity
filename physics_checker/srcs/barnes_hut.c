@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 00:30:37 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 16:04:11 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 			i++;
 			continue ;
 		}
-		adjustvelocity(newuniverse, prtc, node->parent->bodies[i]);
-		printf("(%lf, %lf, %lf)\n", node->parent->bodies[i].velocity.x,
+		adjustvelocity(&newuniverse, prtc, node->parent->bodies[i]);
+		dprintf(2, "(%lf, %lf, %lf)\n", node->parent->bodies[i].velocity.x,
 									node->parent->bodies[i].velocity.y,
 									node->parent->bodies[i].velocity.z);
 		i++;
@@ -72,11 +72,11 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		while (i < 8)
 		{
 			if (node->parent->children[i] != node)
-				adjustvelocity_nodes(newuniverse, prtc, node->parent->children[i]);
+				adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
 			i++;
 		}
 	}
-	adjustposition(newuniverse, prtc);
+	adjustposition(&newuniverse, prtc);
 }
 
 void		barnes_hut(t_octant *universe)

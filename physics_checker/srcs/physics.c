@@ -6,15 +6,15 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 15:23:32 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 16:03:08 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <checker.h>
 #include <stdlib.h>
 
-#define M newuniverse->bodies[prtc].mass
-#define PARTICLE newuniverse->bodies[prtc]
+#define M (*newuniverse)->bodies[prtc].mass
+#define PARTICLE (*newuniverse)->bodies[prtc]
 //#define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
 
 double		findtotalmass(const t_octant *node)
@@ -54,7 +54,7 @@ t_vector	findcenterofgravity(const t_octant *node)
 	return (center);
 }
 
-void		adjustvelocity(t_octant *newuniverse, size_t prtc, t_body body)
+void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 {
 	t_vector	f;
 
@@ -66,7 +66,7 @@ void		adjustvelocity(t_octant *newuniverse, size_t prtc, t_body body)
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 }
 
-void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *node)
+void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *node)
 {
 	t_vector	f;
 	t_body		body;
@@ -81,7 +81,7 @@ void		adjustvelocity_nodes(t_octant *newuniverse, size_t prtc, const t_octant *n
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 }
 
-void		adjustposition(t_octant *newuniverse, size_t prtc)
+void		adjustposition(t_octant **newuniverse, size_t prtc)
 {
 	PARTICLE.position.x += (PARTICLE.velocity.x * TIMESTEP);
 	PARTICLE.position.y += (PARTICLE.velocity.y * TIMESTEP);
