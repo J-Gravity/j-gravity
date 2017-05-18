@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 16:04:40 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 16:40:38 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct	s_bharg
 }				t_bharg;
 
 void			octree_divide(t_octant *root);
+void			print_tree(t_octant *root);
 
 size_t			array_len(void *ptr, size_t datasize);
 int64_t			parsenbodies(char *buf);

@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 16:04:11 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/17 16:54:40 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_octant	*endtree(t_octant *universe, size_t prtc)
 	i = 0;
 	while (i < 8)
 	{
-		if (universe->children[0] == 0)
+		if (universe->children[0]->end == 0)
 			break ;
 		if (prtc <= UNIVERSE_END(i) && prtc >= UNIVERSE_START(i))
 		{
@@ -43,6 +43,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 {
 	size_t		i;
 
+	printf("beginning: [%zu, %zu]\n", node->start, node->end);
 	/*
 	**compare against all particles in current node and neighbor nodes
 	*/
@@ -55,9 +56,11 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 			continue ;
 		}
 		adjustvelocity(&newuniverse, prtc, node->parent->bodies[i]);
+		/*
 		dprintf(2, "(%lf, %lf, %lf)\n", node->parent->bodies[i].velocity.x,
 									node->parent->bodies[i].velocity.y,
 									node->parent->bodies[i].velocity.z);
+									*/
 		i++;
 	}
 	/*
@@ -66,16 +69,22 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 	while (1)
 	{
 		node = node->parent;
-		i = 0;
 		if (node == NULL)
 			break ;
+		i = 0;
+		printf("this is the node: %p\n", node);
 		while (i < 8)
 		{
+			printf("boundary: [%zu, %zu]\n", node->start, node->end);
+			printf("words %p\n", node->parent->children);
+//			printf("DEBUG %ld, %p\n", i, node->parent->children[i]);
 			if (node->parent->children[i] != node)
 				adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
 			i++;
 		}
+		printf("abc\n");
 	}
+	printf("why\n");
 	adjustposition(&newuniverse, prtc);
 }
 
@@ -90,6 +99,8 @@ void		barnes_hut(t_octant *universe)
 		return ;
 	while (i <= universe->end)
 	{
+		t_octant *end = endtree(universe, i);
+		printf("%p\n", end);
 		bh(endtree(universe, i), universe, i);
 		i++;
 	}

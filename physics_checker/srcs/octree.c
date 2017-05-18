@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/16 23:48:26 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 16:54:22 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void        createchildren(t_octant *node)
         node->children[i]->parent = node;
         node->children[i]->bodies = node->bodies;
         node->children[i]->children = (t_octant**)malloc(sizeof(t_octant) * 8);
-	node->children[i]->children[0] = 0;
+		node->children[i]->end = 0;
         i++;
     }
 }
@@ -183,7 +183,9 @@ void		octree_divide(t_octant *root)
 	if (50 == getdepth(root))
 		return ;
 		*/
+	printf("nodep %p", root);
     createchildren(root);
+	printf("after %p\n", root);
     find_octant(root);
     qsort(&(root->bodies[root->start]), (root->end - root->start + 1), sizeof(t_body), compare_octant);
     set_startend(root);
@@ -193,4 +195,23 @@ void		octree_divide(t_octant *root)
         octree_divide(root->children[i]);
         i++;
     }
+}
+
+void		print_tree(t_octant *root)
+{
+	int	i;
+
+	if (root->end <= root->start)
+	{
+		printf("address: %p\n", root);
+		return ;
+	}
+	printf("address: %p, boundary: [%zu, %zu], num_bodies: %zu\n",
+			root, root->start, root->end, root->end - root->start + 1);
+	i = 0;
+	while (i < 8)
+	{
+		print_tree(root->children[i]);
+		i++;
+	}
 }

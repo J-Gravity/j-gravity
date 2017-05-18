@@ -6,7 +6,7 @@
 #    By: elee <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/27 21:33:26 by elee              #+#    #+#              #
-#    Updated: 2017/05/16 23:50:03 by elee             ###   ########.fr        #
+#    Updated: 2017/05/17 16:16:54 by elee             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ $(NAME):
 	mkdir -p build/
 	$(CC) $(CFLAGS) -c $(addprefix srcs/, $(SRCS)) -I$(INCS)
 	mv $(OBJS) build/
-	gcc $(addprefix build/, $(OBJS)) -o $(NAME)
+	gcc -fsanitize=address $(addprefix build/, $(OBJS)) -o $(NAME)
 
 clean:
 	/bin/rm -rf build
