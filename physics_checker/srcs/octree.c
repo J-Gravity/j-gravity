@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 17:26:27 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 17:38:11 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,13 @@ void        set_startend(t_octant *cell)
 {
     int     i;
     size_t  start;
+	size_t	tmp;
 
     start = cell->start;
     i = 0;
     while (i < 8)
     {
+		tmp = start;
         start = find_start(cell, start, i + 1);
         if (start != ULONG_MAX)
         {
@@ -155,6 +157,7 @@ void        set_startend(t_octant *cell)
         {
             cell->children[i]->start = 1;
             cell->children[i]->end = 0;
+			start = tmp;
         }
         i++;
     }
@@ -179,8 +182,13 @@ void		octree_divide(t_octant *root)
 
 	if (root->parent)
 		printf("DEBUF %ld\n", root->parent->end);
-    if (root->end <= root->start)
+    if (root->end < root->start)
 		return ;
+	if (root->end == root->start)
+	{
+		createchildren(root);
+		return ;
+	}
 	if (root->end == 15 && root->start == 0)
 		printf("enterd 0 15\n");
 	/*
@@ -213,13 +221,19 @@ void		print_tree(t_octant *root)
 {
 	int	i;
 
-	if (root->end <= root->start)
+	if (root->end < root->start)
 	{
-		printf("address: %p\n", root);
+		printf("address: %p child of %p\n", root, root->parent);
 		return ;
 	}
-	printf("address: %p, boundary: [%zu, %zu], num_bodies: %zu\n",
-			root, root->start, root->end, root->end - root->start + 1);
+	if (root->end == root->start)
+	{
+	printf("address: %p, boundary: [%zu, %zu], num_bodies: %zu child of %p\n",
+			root, root->start, root->end, root->end - root->start + 1, root->parent);
+		return ;
+	}
+	printf("address: %p, boundary: [%zu, %zu], num_bodies: %zu child of %p\n",
+			root, root->start, root->end, root->end - root->start + 1, root->parent);
 	i = 0;
 	while (i < 8)
 	{
