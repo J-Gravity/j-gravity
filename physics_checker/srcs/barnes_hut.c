@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 17:16:17 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 17:29:34 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		{
 			printf("boundary: [%zu, %zu]\n", node->start, node->end);
 			printf("words %p\n", node->parent->children);
-//			printf("DEBUG %ld, %p\n", i, node->parent->children[i]);
+			printf("DEBUG %ld, %p\n", i, node->parent->children[i]);
 			if (node->parent->children[i] != node)
 				adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
 			i++;

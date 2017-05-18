@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 17:30:07 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/18 14:38:48 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int				main(int argc, char **argv)
 		printf("ERROR NOT ENOUGH MEMORY ON SYSTEM\n");
 		return (1);
 	}
+	printf("wokka\n");
 	free(buf);
 	bodies = create_bodies(atoi(argv[1]), 7);
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
