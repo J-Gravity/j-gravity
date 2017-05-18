@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 16:54:22 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 17:26:27 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,24 +175,36 @@ size_t		getdepth(t_octant *root)
 
 void		octree_divide(t_octant *root)
 {
-    int i;
+	char	i;
 
+	if (root->parent)
+		printf("DEBUF %ld\n", root->parent->end);
     if (root->end <= root->start)
 		return ;
+	if (root->end == 15 && root->start == 0)
+		printf("enterd 0 15\n");
 	/*
 	if (50 == getdepth(root))
 		return ;
 		*/
-	printf("nodep %p", root);
+	printf("nodep %p\n", root);
     createchildren(root);
-	printf("after %p\n", root);
     find_octant(root);
     qsort(&(root->bodies[root->start]), (root->end - root->start + 1), sizeof(t_body), compare_octant);
     set_startend(root);
+	if (root->end == 15)
+	{
+		for (size_t j = 0; j < 16; j++)
+			printf("particle[%zu]: %hhd\n", j, root->bodies[j].octant); 
+		for (int j = 0; j < 8; j++)
+			printf("[%zu, %zu]\n", root->children[j]->start, root->children[j]->end);
+	}
     i = 0;
     while (i < 8)
     {
-        octree_divide(root->children[i]);
+		if (root->end == 15 && root->start == 0)
+			printf("entered creating children for %d\n", i);
+        octree_divide(root->children[(int)i]);
         i++;
     }
 }

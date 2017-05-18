@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/17 16:54:40 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/17 17:16:17 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ void		barnes_hut(t_octant *universe)
 		return ;
 	while (i <= universe->end)
 	{
-		t_octant *end = endtree(universe, i);
-		printf("%p\n", end);
 		bh(endtree(universe, i), universe, i);
 		i++;
 	}
