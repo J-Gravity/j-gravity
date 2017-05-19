@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/17 16:40:38 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/18 16:03:46 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				compare_positions(const void *b1, const void *b2);
 t_body			*sortbodies(t_body *bodies);
 t_body			*getbodies(int fd, int64_t nbodies);
 
-void			barnes_hut(t_octant *root);
+t_octant		*barnes_hut(t_octant *root);
 
 void			adjustposition(t_octant **newuniverse, size_t index);
 void			adjustvelocity(t_octant **newuniverse, size_t index, t_body body);

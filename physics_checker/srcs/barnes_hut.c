@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/18 15:55:20 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/18 16:03:16 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,19 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 	adjustposition(&newuniverse, prtc);
 }
 
-void		barnes_hut(t_octant *universe)
+t_octant	*barnes_hut(t_octant *universe)
 {
 	size_t		i;
 
 	i = 0;
 	if (!universe)
-		return ;
+		return (0);
 	if (!universe->bodies)
-		return ;
+		return (0);
 	while (i <= universe->end)
 	{
 		bh(endtree(universe, i), universe, i);
 		i++;
 	}
+	return (universe);
 }

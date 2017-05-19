@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/18 14:38:48 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/18 17:07:24 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,46 @@ void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 	node->children = (t_octant**)malloc(sizeof(t_octant*) * 8);
 }
 
+void			outresults(t_octant *universe, int filen)
+{
+	char		*filename;
+	int			fd;
+	int64_t		*buf;
+	double		*cords;
+	size_t		i;
+
+	i = 0;
+	asprintf(&filename, "/output/out%d.jgrav", filen);
+	fd = open(filename, O_CREAT, O_WRONLY, O_APPEND);
+	buf = malloc(sizeof(int64_t) * 1);
+	*buf = universe->end - universe->start + 1;
+	write(fd, buf, sizeof(int64_t));
+	*buf = (int64_t)5.2;
+	cords = (double*)malloc(sizeof(double) * 3 * (universe->end - universe->start + 1));
+	if (!cords)
+	{
+		printf("ALLOC ERROR\n");
+		return ;
+	}
+	while (i <= universe->end)
+	{
+		cords[i] = universe->bodies[i].position.x;
+		cords++;
+		cords[i] = universe->bodies[i].position.y;
+		cords++;
+		cords[i] = universe->bodies[i].position.z;
+		i++;
+	}
+	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
+	printf("DEBUG\n");
+	if (cords != 0)
+		free(cords);
+	printf("DEBUG\n");
+	free(filename);
+	printf("DEBUG\n");
+	free(buf);
+}
+
 void				simulation(int o, t_octant *universe)
 {
 	int		i;
@@ -32,7 +72,8 @@ void				simulation(int o, t_octant *universe)
 	i = 0;
 	while (i < o)
 	{
-		barnes_hut(universe);
+		universe = barnes_hut(universe);
+		outresults(universe, i);
 		//printf("%zu, %zu\n", universe->start, universe->end);
 		/*
 		for (size_t j = universe->start; j <= universe->end; j++)
