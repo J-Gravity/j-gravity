@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/22 13:39:43 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:23:33 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 {
 	size_t		i;
 
-	printf("beginning: [%zu, %zu]\n", node->start, node->end);
+//	printf("beginning: [%zu, %zu]\n", node->start, node->end);
 	/*
 	**compare against all particles in current node and neighbor nodes
 	*/
@@ -68,8 +68,8 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		if (node->parent == NULL)
 			break ;
 		i = 0;
-		printf("this is the node: %p\n", node);
-		printf("parent          : %p\n", node->parent);
+//		printf("this is the node: %p\n", node);
+//		printf("parent          : %p\n", node->parent);
 		while (i < 8)
 		{
 			if (node->parent->children[i] != node)

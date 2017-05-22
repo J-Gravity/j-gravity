@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 14:09:28 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:42:51 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <checker.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
 
 void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 {
@@ -59,14 +60,11 @@ void			outresults(t_octant *universe, int filen)
 		i++;
 	}
 	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
-	printf("DEBUG\n");
 	if (cords != 0)
 	{
 		free(cords);
 	}
-	printf("DEBUG\n");
 	free(filename);
-	printf("DEBUG\n");
 	free(buf);
 }
 
@@ -77,10 +75,7 @@ void				simulation(int o, t_octant *universe)
 	i = 0;
 	while (i < o)
 	{
-		universe = barnes_hut(universe);
-		outresults(universe, i);
-		//printf("%zu, %zu\n", universe->start, universe->end);
-		for (size_t j = universe->start; j <= universe->end; j++)
+	/*	for (size_t j = universe->start; j <= universe->end; j++)
 		{
 			printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\nmass = (%lf)\n", 
 			j,
@@ -91,7 +86,23 @@ void				simulation(int o, t_octant *universe)
 			universe->bodies[j].velocity.y,
 			universe->bodies[j].velocity.z,
 			universe->bodies[j].mass);
-		}
+		} */
+
+		universe = barnes_hut(universe);
+		outresults(universe, i);
+		//printf("%zu, %zu\n", universe->start, universe->end);
+/*		for (size_t j = universe->start; j <= universe->end; j++)
+		{
+			printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\nmass = (%lf)\n", 
+			j,
+			universe->bodies[j].position.x,
+			universe->bodies[j].position.y,
+			universe->bodies[j].position.z,
+			universe->bodies[j].velocity.x,
+			universe->bodies[j].velocity.y,
+			universe->bodies[j].velocity.z,
+			universe->bodies[j].mass);
+		} */
 		i++;
 	}
 }
@@ -144,6 +155,7 @@ int				main(int argc, char **argv)
 	t_body		*bodies;
 	t_octant	*root;
 
+	srand(time(NULL));
 	if (argc != 3)
 		exit(1);
 	buf = malloc(0xFFFFFFFF); //reserve 4 gb of memory
@@ -158,7 +170,11 @@ int				main(int argc, char **argv)
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
 	setnode(root, bodies, atoi(argv[1]));
 	octree_divide(root);
-	print_tree(root);
+	for (size_t i = 0; i <= root->end; i++)
+	{
+		printf("PARTICLE ID %ld: %lf\n", i, root->bodies[i].position.x);
+	}
+//	print_tree(root);
 	simulation(atoi(argv[2]), root);
 	return (0);
 }

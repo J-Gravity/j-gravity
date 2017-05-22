@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 13:01:25 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:31:43 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 
-# define TIMESTEP 100000000.0
+# define TIMESTEP 1.0
 # define G 0.000000000066742
 
 # define ABS(x) (x < 0 ? -x : x)

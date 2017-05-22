@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 14:12:51 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:38:25 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_vector	force3d(t_body mass1, t_body mass2)
 	t_vector	force;
 	double		denominator;
 
-	printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
+	//printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
 	denominator = pow(vectordist(mass1.position, mass2.position), 3);
 	force.x = (G * mass1.mass * mass2.mass)/denominator;
 	force.y = (G * mass1.mass * mass2.mass)/denominator;
@@ -61,9 +61,13 @@ t_vector	findcenterofgravity(const t_octant *node)
         center.x += (node->bodies[i].position.x * node->bodies[i].mass);
         center.y += (node->bodies[i].position.y * node->bodies[i].mass);
         center.z += (node->bodies[i].position.z * node->bodies[i].mass);
+	//	printf("cog PARTICLE %ld: position: (%lf, %lf, %lf)\n", i, node->bodies[i].position.x,
+//									node->bodies[i].position.y,
+//									node->bodies[i].position.z);
         combinedmass += node->bodies[i].mass;
 		i++;
     }
+	//printf("DEBUG %lf %lf\n", center.x, combinedmass);
     center.x /= combinedmass;
     center.y /= combinedmass;
     center.z /= combinedmass;
@@ -78,6 +82,7 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
+	printf("DEBUG PARTICLE: %ld %.20lf\n", prtc, PARTICLE.velocity.x);
 }
 
 void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *node)
@@ -87,11 +92,12 @@ void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *
 
 	body.mass = findtotalmass(node);
 	body.position = findcenterofgravity(node);
-	printf("position.x = %lf\n", body.position.x);
+	//printf("position.x = %lf, mass = %lf\n", body.position.x, body.mass);
 	f = force3d(PARTICLE, body);
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
+	printf("DEBUG NODE: % ld %.20lf\n", prtc, PARTICLE.velocity.x);
 }
 
 void		adjustposition(t_octant **newuniverse, size_t prtc)
