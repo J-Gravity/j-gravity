@@ -6,13 +6,14 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/22 13:15:03 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 13:39:43 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "checker.h"
 #include <stdio.h>
+#include <unistd.h>
 
 #define UNIVERSE_START(X) universe->children[X]->start
 #define UNIVERSE_END(X) universe->children[X]->end
@@ -55,16 +56,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 			i++;
 			continue ;
 		}
-		dprintf(2, "before: %ld : %lf %lf %lf\n", i,
-									node->parent->bodies[i].velocity.x,
-									node->parent->bodies[i].velocity.y,
-									node->parent->bodies[i].velocity.z);
 		adjustvelocity(&newuniverse, prtc, node->parent->bodies[i]);
-		dprintf(2, "VELOCITY FOR %ld (%lf, %lf, %lf)\n", 
-									i,
-									node->parent->bodies[i].velocity.x,
-									node->parent->bodies[i].velocity.y,
-									node->parent->bodies[i].velocity.z);
 		i++;
 	}
 	/*

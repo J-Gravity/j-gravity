@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 13:17:23 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 13:30:23 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
-	PARTICLE.velocity.x = 0;
+	PARTICLE.velocity.x = 100;
 }
 
 void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *node)
