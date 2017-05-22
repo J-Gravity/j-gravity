@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 13:40:39 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:08:37 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,26 @@
 
 #define M (*newuniverse)->bodies[prtc].mass
 #define PARTICLE (*newuniverse)->bodies[prtc]
-//#define F_S(S) ((G * body.mass * M) / pow(finddist(body.position) - finddist(PARTICLE.position), 3)) * (body.position.S - PARTICLE.position.S)
+
+t_vector	force3d(t_body mass1, t_body mass2)
+{
+	t_vector	force;
+	double		denominator;
+
+	printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
+	printf("vectordist: %lf\n", vectordist(mass1.position, mass2.position));
+	denominator = pow(vectordist(mass1.position, mass2.position), 3);
+	printf("denominator: %lf\n", denominator);
+	printf("G: %.20lf\n", G);
+	force.x = (G * mass1.mass * mass2.mass)/denominator;
+	force.y = (G * mass1.mass * mass2.mass)/denominator;
+	force.z = (G * mass1.mass * mass2.mass)/denominator;
+	printf("DEBUG %.20lf\n", (G * mass1.mass * mass2.mass) / denominator);
+	force.x *= (mass2.position.x - mass1.position.x) / ABS(mass2.position.x - mass1.position.x);
+	force.y *= (mass2.position.y - mass1.position.y) / ABS(mass2.position.y - mass1.position.y);
+	force.z *= (mass2.position.z - mass1.position.z) / ABS(mass2.position.z - mass1.position.z);
+	return (force);
+}
 
 double		findtotalmass(const t_octant *node)
 {
@@ -59,9 +78,8 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 {
 	t_vector	f;
 
-	f.x = FORCE3D(x, PARTICLE.position, body.position);
-	f.y = FORCE3D(y, PARTICLE.position, body.position);
-	f.z = FORCE3D(z, PARTICLE.position, body.position);
+	f = force3d(PARTICLE, body);
+	printf(" FORCE: %ld (%.20lf %.20lf %.20lf)\n", prtc, f.x, f.y, f.z);
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
@@ -74,9 +92,8 @@ void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *
 
 	body.mass = findtotalmass(node);
 	body.position = findcenterofgravity(node);
-	f.x = FORCE3D(x, PARTICLE.position, body.position);
-	f.y = FORCE3D(y, PARTICLE.position, body.position);
-	f.z = FORCE3D(z, PARTICLE.position, body.position);
+	printf("position.x = %lf\n", body.position.x);
+	f = force3d(PARTICLE, body);
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;

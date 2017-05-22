@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 13:12:13 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 14:09:28 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_body			rand_body(int mag)
 	velocity.y = 0;
 	velocity.z = rand_double(2);
 	body.velocity = velocity;
-	body.mass = rand_double(10000);
+	body.mass = 10000000000000000.0;
 	return (body);
 }
 
