@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 16:17:14 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 16:18:16 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ t_body			makebody(t_invector inpos, t_invector invel)
 
 t_body			*read_bodies(char *positions, char *velocities, size_t *nbodies)
 {
-	int			posfd = open(velocities, O_RDONLY);
+	int			posfd = open(positions, O_RDONLY);
 	int			velfd = open(velocities, O_RDONLY);
 	t_body		*ret;
 	size_t		i;
