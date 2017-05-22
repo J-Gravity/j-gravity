@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/18 16:03:16 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 13:15:03 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,16 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 			i++;
 			continue ;
 		}
-		adjustvelocity(&newuniverse, prtc, node->parent->bodies[i]);
-		/*
-		dprintf(2, "(%lf, %lf, %lf)\n", node->parent->bodies[i].velocity.x,
+		dprintf(2, "before: %ld : %lf %lf %lf\n", i,
+									node->parent->bodies[i].velocity.x,
 									node->parent->bodies[i].velocity.y,
 									node->parent->bodies[i].velocity.z);
-									*/
+		adjustvelocity(&newuniverse, prtc, node->parent->bodies[i]);
+		dprintf(2, "VELOCITY FOR %ld (%lf, %lf, %lf)\n", 
+									i,
+									node->parent->bodies[i].velocity.x,
+									node->parent->bodies[i].velocity.y,
+									node->parent->bodies[i].velocity.z);
 		i++;
 	}
 	/*
@@ -80,9 +84,7 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 				adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
 			i++;
 		}
-		printf("abc\n");
 	}
-	printf("why\n");
 	adjustposition(&newuniverse, prtc);
 }
 

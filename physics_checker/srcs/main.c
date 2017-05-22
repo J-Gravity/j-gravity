@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/18 17:07:24 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/22 13:12:13 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void			outresults(t_octant *universe, int filen)
 	int64_t		*buf;
 	double		*cords;
 	size_t		i;
+	size_t		j;
 
 	i = 0;
+	j = 0;
 	asprintf(&filename, "/output/out%d.jgrav", filen);
 	fd = open(filename, O_CREAT, O_WRONLY, O_APPEND);
 	buf = malloc(sizeof(int64_t) * 1);
@@ -48,17 +50,20 @@ void			outresults(t_octant *universe, int filen)
 	}
 	while (i <= universe->end)
 	{
-		cords[i] = universe->bodies[i].position.x;
-		cords++;
-		cords[i] = universe->bodies[i].position.y;
-		cords++;
-		cords[i] = universe->bodies[i].position.z;
+		cords[j] = universe->bodies[i].position.x;
+		j++;
+		cords[j] = universe->bodies[i].position.y;
+		j++;
+		cords[j] = universe->bodies[i].position.z;
+		j++;
 		i++;
 	}
 	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
 	printf("DEBUG\n");
 	if (cords != 0)
+	{
 		free(cords);
+	}
 	printf("DEBUG\n");
 	free(filename);
 	printf("DEBUG\n");
@@ -75,19 +80,18 @@ void				simulation(int o, t_octant *universe)
 		universe = barnes_hut(universe);
 		outresults(universe, i);
 		//printf("%zu, %zu\n", universe->start, universe->end);
-		/*
 		for (size_t j = universe->start; j <= universe->end; j++)
 		{
-			printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\n", 
-			universe->bodies[i].id,
-			universe->bodies[i].position.x,
-			universe->bodies[i].position.y,
-			universe->bodies[i].position.z,
-			universe->bodies[i].velocity.x,
-			universe->bodies[i].velocity.y,
-			universe->bodies[i].velocity.z);
+			printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\nmass = (%lf)\n", 
+			j,
+			universe->bodies[j].position.x,
+			universe->bodies[j].position.y,
+			universe->bodies[j].position.z,
+			universe->bodies[j].velocity.x,
+			universe->bodies[j].velocity.y,
+			universe->bodies[j].velocity.z,
+			universe->bodies[j].mass);
 		}
-		*/
 		i++;
 	}
 }
@@ -102,10 +106,11 @@ double				rand_double(double max)
 
 t_body			rand_body(int mag)
 {
-	t_body	body;
-	double	elevation;
-	double	azimuth;
-	double	radius;
+	t_body		body;
+	double		elevation;
+	double		azimuth;
+	double		radius;
+	t_vector	velocity;
 
 	elevation = asin(rand_double(2) - 1);
 	azimuth = 2 * M_PI * rand_double(1);
@@ -113,7 +118,10 @@ t_body			rand_body(int mag)
 	body.position = (t_vector){radius * cos(elevation) * cos(azimuth), \
 								radius * cos(elevation) * sin(azimuth),
 								0.3 * radius * sin(elevation)};
-	body.velocity = (t_vector){0.0, 0.0, 0.0};
+	velocity.x = 1;
+	velocity.y = 0;
+	velocity.z = rand_double(2);
+	body.velocity = velocity;
 	body.mass = rand_double(10000);
 	return (body);
 }
@@ -126,7 +134,6 @@ t_body			*create_bodies(size_t num_bodies, int mag)
 	for (size_t i = 0; i < num_bodies; i++)
 	{
 		bodies[i] = rand_body(mag);
-		bodies[i].id = i;
 	}
 	return (bodies);
 }
