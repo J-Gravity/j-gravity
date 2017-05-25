@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 16:13:46 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/24 20:48:00 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ typedef struct	s_vector
 	double		y;
 	double		z;
 }				t_vector;
+
+typedef struct	s_floatvector
+{
+	float x;
+	float y;
+	float z;
+}				t_fvector;
 
 typedef struct	s_invector
 {

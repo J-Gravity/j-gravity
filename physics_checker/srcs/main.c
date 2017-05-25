@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/24 20:05:22 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/24 20:45:59 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void			outresults(t_octant *universe, int filen)
 	i = 0;
 	j = 0;
 	asprintf(&filename, "out%d.jgrav", filen);
-	fd = open(filename, O_CREAT, O_RDWR, O_APPEND);
+	fd = open(filename, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH | S_IRGRP | S_IWGRP);
 	buf = malloc(sizeof(int64_t) * 1);
 	*buf = universe->end - universe->start + 1;
 	write(fd, buf, sizeof(int64_t));
@@ -60,6 +60,7 @@ void			outresults(t_octant *universe, int filen)
 		j++;
 		i++;
 	}
+	printf("%s\n", (char*)cords);
 	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
 	if (cords != 0)
 	{
@@ -91,6 +92,7 @@ void				simulation(t_octant *universe)
 
 		universe = barnes_hut(universe);
 		outresults(universe, i);
+		//slowoutput(universe, i);
 		//printf("%zu, %zu\n", universe->start, universe->end);
 /*		for (size_t j = universe->start; j <= universe->end; j++)
 		{
