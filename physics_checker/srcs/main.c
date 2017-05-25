@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 16:18:16 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/24 20:05:22 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void			outresults(t_octant *universe, int filen)
 
 	i = 0;
 	j = 0;
-	asprintf(&filename, "/output/out%d.jgrav", filen);
-	fd = open(filename, O_CREAT, O_WRONLY, O_APPEND);
+	asprintf(&filename, "out%d.jgrav", filen);
+	fd = open(filename, O_CREAT, O_RDWR, O_APPEND);
 	buf = malloc(sizeof(int64_t) * 1);
 	*buf = universe->end - universe->start + 1;
 	write(fd, buf, sizeof(int64_t));
@@ -48,7 +48,7 @@ void			outresults(t_octant *universe, int filen)
 	if (!cords)
 	{
 		printf("ALLOC ERROR\n");
-		return ;
+		exit(1);
 	}
 	while (i <= universe->end)
 	{
@@ -69,12 +69,12 @@ void			outresults(t_octant *universe, int filen)
 	free(buf);
 }
 
-void				simulation(int o, t_octant *universe)
+void				simulation(t_octant *universe)
 {
 	int		i;
 	
 	i = 0;
-	while (i < o)
+	while (i < 4)
 	{
 	/*	for (size_t j = universe->start; j <= universe->end; j++)
 		{
@@ -208,11 +208,7 @@ int				main(int argc, char **argv)
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
 	setnode(root, bodies, nbodies);
 	octree_divide(root);
-	for (size_t i = 0; i <= root->end; i++)
-	{
-		printf("PARTICLE ID %ld: %lf\n", i, root->bodies[i].position.x);
-	}
-//	print_tree(root);
-	simulation(atoi(argv[2]), root);
+	print_tree(root);
+	simulation(root);
 	return (0);
 }
