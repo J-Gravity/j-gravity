@@ -1,0 +1,2 @@
+Test skipped, replacing localeconv/nl_langinfo doesn't work
+PASS t-locale (exit status: 0)
