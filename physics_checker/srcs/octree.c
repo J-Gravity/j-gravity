@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/18 15:49:07 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 14:52:08 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void		octree_divide(t_octant *root)
 	if (50 == getdepth(root))
 		return ;
 		*/
-	printf("nodep %p\n", root);
+//	printf("nodep %p\n", root);
     createchildren(root);
     find_octant(root);
     qsort(&(root->bodies[root->start]), (root->end - root->start + 1), sizeof(t_body), compare_octant);

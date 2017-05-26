@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/24 20:48:00 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 15:16:45 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <gmp.h>
 
 # define TIMESTEP 1.0
-# define G 0.000000000066742
 
 # define ABS(x) (x < 0 ? -x : x)
 #define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
@@ -30,9 +30,9 @@
 
 typedef struct	s_vector
 {
-	double		x;
-	double		y;
-	double		z;
+	mpf_t		x;
+	mpf_t		y;
+	mpf_t		z;
 }				t_vector;
 
 typedef struct	s_floatvector
@@ -52,7 +52,7 @@ typedef struct	s_invector
 
 typedef struct	s_body
 {
-	double		mass;
+	mpf_t		mass;
 	t_vector	position;
 	t_vector	velocity;
 	t_vector	force;

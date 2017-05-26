@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/24 20:45:59 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 14:51:39 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int				main(int argc, char **argv)
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
 	setnode(root, bodies, nbodies);
 	octree_divide(root);
-	print_tree(root);
+	//print_tree(root);
 	simulation(root);
 	return (0);
 }

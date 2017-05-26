@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 14:38:25 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 15:14:48 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,15 @@ t_vector	force3d(t_body mass1, t_body mass2)
 {
 	t_vector	force;
 	double		denominator;
+	double		g = 0.000000000066742;
 
-	//printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
+	printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
 	denominator = pow(vectordist(mass1.position, mass2.position), 3);
-	force.x = (G * mass1.mass * mass2.mass)/denominator;
-	force.y = (G * mass1.mass * mass2.mass)/denominator;
-	force.z = (G * mass1.mass * mass2.mass)/denominator;
+	printf("FIND THE ZERO: %.20lf, %lf %lf, %lf\n", 0.000000000066742, denominator, mass1.mass, mass2.mass);
+	force.x = (g * mass1.mass * mass2.mass)/denominator;
+	printf("DEBUG %.20lf\n", force.x);
+	force.y = (g * mass1.mass * mass2.mass)/denominator;
+	force.z = (g * mass1.mass * mass2.mass)/denominator;
 	force.x *= (mass2.position.x - mass1.position.x) / ABS(mass2.position.x - mass1.position.x);
 	force.y *= (mass2.position.y - mass1.position.y) / ABS(mass2.position.y - mass1.position.y);
 	force.z *= (mass2.position.z - mass1.position.z) / ABS(mass2.position.z - mass1.position.z);
@@ -82,7 +85,8 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
-	printf("DEBUG PARTICLE: %ld %.20lf\n", prtc, PARTICLE.velocity.x);
+	printf("DEBUG INFO: m: %lf, f: %lf, t: %lf\n", PARTICLE.mass, f.x, TIMESTEP);
+	printf("DEBUG PARTICLE: %ld %.40lf\n", prtc, PARTICLE.velocity.x);
 }
 
 void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *node)
