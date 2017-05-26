@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/22 14:38:25 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 15:46:18 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@ t_vector	force3d(t_body mass1, t_body mass2)
 	t_vector	force;
 	double		denominator;
 
-	//printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
+	printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
 	denominator = pow(vectordist(mass1.position, mass2.position), 3);
 	force.x = (G * mass1.mass * mass2.mass)/denominator;
 	force.y = (G * mass1.mass * mass2.mass)/denominator;
 	force.z = (G * mass1.mass * mass2.mass)/denominator;
+	printf("mass2: %.40lf\n", mass2.mass);
+	printf("DEBUG %.40lf, %.40lf, %.40lf, %.40lf, %.40lf\n", force.x, denominator, G, mass1.mass, mass2.mass);
 	force.x *= (mass2.position.x - mass1.position.x) / ABS(mass2.position.x - mass1.position.x);
 	force.y *= (mass2.position.y - mass1.position.y) / ABS(mass2.position.y - mass1.position.y);
 	force.z *= (mass2.position.z - mass1.position.z) / ABS(mass2.position.z - mass1.position.z);
+	printf("DEBUG %.40lf\n", force.x);
 	return (force);
 }
 
@@ -91,8 +94,10 @@ void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *
 	t_body		body;
 
 	body.mass = findtotalmass(node);
+	if (body.mass == 0)
+		return ;
 	body.position = findcenterofgravity(node);
-	//printf("position.x = %lf, mass = %lf\n", body.position.x, body.mass);
+	printf("position.x = %.40lf, mass = %.40lf\n", body.position.x, body.mass);
 	f = force3d(PARTICLE, body);
 	PARTICLE.velocity.x += ((f.x)/(PARTICLE.mass)) * TIMESTEP;
 	PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;

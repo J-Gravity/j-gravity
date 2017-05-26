@@ -6,7 +6,7 @@
 /*   By: elee <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 23:40:25 by elee              #+#    #+#             */
-/*   Updated: 2017/05/22 14:23:33 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 15:44:32 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,22 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		while (i < 8)
 		{
 			if (node->parent->children[i] != node)
-				adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
+			{
+				if (node->parent->children[i]->end < node->parent->children[i]->start)
+				{
+					adjustvelocity_nodes(&newuniverse, prtc, node->parent->children[i]);
+				}
+			}
 			i++;
 		}
 	}
-	adjustposition(&newuniverse, prtc);
 }
 
 t_octant	*barnes_hut(t_octant *universe)
 {
 	size_t		i;
 
-	i = 0;
+	i = universe->start;
 	if (!universe)
 		return (0);
 	if (!universe->bodies)
@@ -92,6 +96,12 @@ t_octant	*barnes_hut(t_octant *universe)
 	while (i <= universe->end)
 	{
 		bh(endtree(universe, i), universe, i);
+		i++;
+	}
+	i = universe->start;
+	while (i <= universe->end)
+	{
+		adjustposition(&universe, i);
 		i++;
 	}
 	return (universe);
