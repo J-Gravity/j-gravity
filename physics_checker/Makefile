@@ -6,7 +6,7 @@
 #    By: elee <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/27 21:33:26 by elee              #+#    #+#              #
-#    Updated: 2017/05/26 16:07:38 by smifsud          ###   ########.fr        #
+#    Updated: 2017/05/26 16:22:41 by smifsud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,13 +33,14 @@ $(NAME): $(CHECKER)
 	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64
 
 $(CHECKER):
-	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.la -I $(INCS) -m64 -o $(CHECKER)
+	gcc -fsanitize=address srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER)
 
 clean:
 	/bin/rm -rf build
 
 fclean: clean
 	/bin/rm -f $(NAME)
+	rm -f $(CHECKER)
 
 re: fclean all
 

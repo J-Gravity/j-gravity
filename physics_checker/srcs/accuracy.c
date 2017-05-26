@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/24 20:50:58 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 16:24:08 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_init2(reg, 64);
 	mpf_set_d(bignum, 0);
 	mpf_set_d(compare, 0);
+	printf("CONFIRM\n");
 	while (read(cpucomp, &buf, sizeof(t_vector) * 3))
 	{
+		printf("RUN: %ld\n", run);
 		mpf_set_d(reg, finddist(buf));
 		mpf_add(compare, compare, reg);
 		run++;
@@ -45,8 +47,10 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	printf("CALCULATED CPU SAMPLESET\n\n\n");
 	mpf_div_ui(compare, compare, run);
 	run = 0;
+	printf("DEBUGGY\n");
 	while (read(gpucomp, &cmpbuf, sizeof(t_fvector)))
 	{
+		printf("RUN: %ld\n", run);
 		buf.x = cmpbuf.x;
 		buf.y = cmpbuf.y;
 		buf.z = cmpbuf.z;
