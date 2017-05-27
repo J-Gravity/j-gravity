@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 18:13:59 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 22:29:52 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ t_body			*create_bodies(size_t num_bodies, int mag)
 	return (bodies);
 }
 
-t_body			makebody(t_invector inpos, t_invector invel)
+t_body			makebody(t_invector inpos)
 {
 	t_body		newbody;
 
@@ -161,30 +161,28 @@ t_body			makebody(t_invector inpos, t_invector invel)
 	newbody.position.x = inpos.x;
 	newbody.position.y = inpos.y;
 	newbody.position.z = inpos.z;
-	newbody.velocity.x = invel.x;
-	newbody.velocity.x = invel.y;
-	newbody.velocity.z = invel.z;
+	newbody.velocity.x = inpos.xvel;
+	newbody.velocity.x = inpos.yvel;
+	newbody.velocity.z = inpos.zvel;
 	return (newbody);
 }
 
-t_body			*read_bodies(char *positions, char *velocities, size_t *nbodies)
+t_body			*read_bodies(char *positions, size_t *nbodies)
 {
 	int			posfd = open(positions, O_RDONLY);
-	int			velfd = open(velocities, O_RDONLY);
 	t_body		*ret;
 	size_t		i;
 	t_invector	inpos;
-	t_invector	invel;
 	
-	i = 0;
 	read(posfd, nbodies, sizeof(int64_t));
 	printf("nbodies %ld\n", *nbodies);
 	ret = (t_body*)malloc(sizeof(t_body) * (*nbodies + 1));
+	read(posfd, &i, sizeof(int64_t));
+	i = 0;
 	while (i <= *nbodies)
 	{
 		read(posfd, &inpos, sizeof(t_invector));
-		read(velfd, &invel, sizeof(t_invector));
-		ret[i] = makebody(inpos, invel);
+		ret[i] = makebody(inpos);
 		i++;
 	}
 	return (ret);
@@ -208,7 +206,7 @@ int				main(int argc, char **argv)
 	}
 	printf("wokka\n");
 	free(buf);
-	bodies = read_bodies(argv[1], argv[2], &nbodies);
+	bodies = read_bodies(argv[1], &nbodies);
 	root = (t_octant*)malloc(sizeof(t_octant) * 1);
 	setnode(root, bodies, nbodies);
 	octree_divide(root);

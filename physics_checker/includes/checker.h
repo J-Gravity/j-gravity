@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 18:57:01 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 22:28:28 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct	s_invector
 	float		y;
 	float		z;
 	float		mass;
+	float		xvel;
+	float		yvel;
+	float		zvel;
+	float		empty;
 }				t_invector;
 
 typedef struct	s_body
