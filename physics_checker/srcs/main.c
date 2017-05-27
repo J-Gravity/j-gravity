@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:46:09 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 22:58:00 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void			outresults(t_octant *universe, int filen)
 
 	i = 0;
 	j = 0;
+	printf("THIS IS A DEBUG MESSAGE\n");
 	asprintf(&filename, "out%d.jgrav", filen);
 	fd = open(filename, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH | S_IRGRP | S_IWGRP);
 	buf = malloc(sizeof(int64_t) * 1);
@@ -52,7 +53,6 @@ void			outresults(t_octant *universe, int filen)
 	while (i <= universe->end)
 	{
 		cords[j] = universe->bodies[i].position.x;
-		printf("CORDS: %lf\n", cords[j]);
 		j++;
 		cords[j] = universe->bodies[i].position.y;
 		j++;
@@ -60,6 +60,7 @@ void			outresults(t_octant *universe, int filen)
 		j++;
 		cords[j] = universe->bodies[i].mass;
 		j++;
+		printf("CORDS: x: %lf, y: %lf, z: %lf, m: %lf\n", cords[j - 4], cords[j - 3], cords[j - 2], cords[j - 1]);
 		i++;
 	}
 	printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);
