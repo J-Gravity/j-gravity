@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:33:02 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/26 22:40:13 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int				main(int argc, char **argv)
 	size_t		nbodies;
 
 	srand(time(NULL));
-	if (argc != 3)
+	if (argc != 2)
 		exit(1);
 	buf = malloc(0xFFFFFFFF); //reserve 4 gb of memory
 	if (!buf)
