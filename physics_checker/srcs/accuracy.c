@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 21:13:08 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/26 22:54:36 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	int64_t		run;
 
 	printf("|--------CALCULATING ACCURACY--------|\n");
+	printf("|-----------------CPU----------------|\n");
 	read(cpucomp, &run, sizeof(int64_t));
 	mpf_init2(cpu_x, 512);
 	mpf_init2(cpu_y, 512);
@@ -58,8 +59,11 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_init2(gpu_z, 512);
 	mpf_init2(gpu_m, 512);
 	mpf_init2(temp, 64);
+	printf("%lld\n", run);
+	run = 0;
 	while (read(cpucomp, &cpu_buf, sizeof(t_vector)))
 	{
+		printf("%lld\n", run);
 		read(cpucomp, &cpu_mass, sizeof(double));
 		mpf_set_d(temp, cpu_mass);
 		mpf_add(cpu_m, cpu_m, temp);
@@ -69,10 +73,13 @@ void			accuracy_check(int cpucomp, int gpucomp)
 		mpf_add(cpu_y, cpu_y, temp);
 		mpf_set_d(temp, cpu_buf.z * cpu_mass);
 		mpf_add(cpu_z, cpu_z, temp);
+		run++;
 	}
 	mpf_div(cpu_x, cpu_x, cpu_m);
 	mpf_div(cpu_y, cpu_y, cpu_m);
 	mpf_div(cpu_z, cpu_z, cpu_m);
+	
+	printf("|-----------------GPU----------------|\n");
 	mpf_init2(gpu_x, 512);
 	mpf_init2(gpu_y, 512);
 	mpf_init2(gpu_z, 512);
@@ -97,6 +104,8 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_div(gpu_x, gpu_x, gpu_m);
 	mpf_div(gpu_y, gpu_y, gpu_m);
 	mpf_div(gpu_z, gpu_z, gpu_m);
+
+	printf("|-----------------DIFF---------------|\n");
 	mpf_sub(cpu_x, cpu_x, gpu_x); 
 	mpf_sub(cpu_y, cpu_y, gpu_y); 
 	mpf_sub(cpu_z, cpu_z, gpu_z); 
