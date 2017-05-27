@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 23:30:23 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/26 23:49:30 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ void			outresults(t_octant *universe, int filen)
 	j = 0;
 	printf("THIS IS A DEBUG MESSAGE\n");
 	asprintf(&filename, "out%d.jgrav", filen);
-	fd = open(filename, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH | S_IRGRP | S_IWGRP);
+	fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH | S_IRGRP | S_IWGRP);
 	buf = malloc(sizeof(int64_t) * 1);
 	*buf = universe->end - universe->start + 1;
+	printf("%lld\n", *buf);
 	write(fd, buf, sizeof(int64_t));
 	cords = (double*)malloc(sizeof(double) * 4 * (universe->end - universe->start + 1));
 	if (!cords)
