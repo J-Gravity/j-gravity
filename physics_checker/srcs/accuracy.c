@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 16:46:41 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 18:03:49 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,42 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+
+t_body			makebody(t_invector inpos, t_invector invel)
+{
+	t_body		newbody;
+
+	newbody.mass = inpos.mass;
+	newbody.position.x = inpos.x;
+	newbody.position.y = inpos.y;
+	newbody.position.z = inpos.z;
+	newbody.velocity.x = invel.x;
+	newbody.velocity.x = invel.y;
+	newbody.velocity.z = invel.z;
+	return (newbody);
+}
+
+t_body			*read_bodies(char *positions, char *velocities, size_t *nbodies)
+{
+	int			posfd = open(positions, O_RDONLY);
+	int			velfd = open(velocities, O_RDONLY);
+	t_body		*ret;
+	size_t		i;
+	t_invector	inpos;
+	t_invector	invel;
+
+	i = 0;
+	read(posfd, nbodies, sizeof(int64_t));
+	ret = (t_body*)malloc(sizeof(t_body) * (*nbodies + 1));
+	while (i <= *nbodies)
+	{
+		read(posfd, &inpos, sizeof(t_invector));
+		read(velfd, &invel, sizeof(t_invector));
+		ret[i] = makebody(inpos, invel);
+		i++;
+	}
+	return (ret);
+}
 
 void			accuracy_check(int cpucomp, int gpucomp)
 {
@@ -38,14 +74,12 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	printf("CONFIRM\n");
 	while (read(cpucomp, &(buf), sizeof(t_vector)))
 	{
-		printf("RUN: %lld\n", run);
-		printf("%.40lf, %.40lf, %lf, %lf, %lf\n", mpf_get_d(compare), finddist(buf), buf.x, buf.y, buf.z);
+	//	printf("RUN: %lld\n", run);
+	//	printf("%.40lf, %.40lf, %lf, %lf, %lf\n", mpf_get_d(compare), finddist(buf), buf.x, buf.y, buf.z);
 		mpf_set_d(reg, finddist(buf));
 		printf("paus\n");
 		mpf_add(compare, compare, reg);
 		run++;
-		if (1 > read(cpucomp, &buf, sizeof(double)))
-			break ;
 	}
 	printf("CALCULATED CPU SAMPLESET\n\n\n");
 	mpf_div_ui(compare, compare, run);

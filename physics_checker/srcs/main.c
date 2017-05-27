@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 15:22:19 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 18:13:59 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void			outresults(t_octant *universe, int filen)
 	while (i <= universe->end)
 	{
 		cords[j] = universe->bodies[i].position.x;
+		printf("CORDS: %lf\n", cords[j]);
 		j++;
 		cords[j] = universe->bodies[i].position.y;
 		j++;
@@ -60,7 +61,7 @@ void			outresults(t_octant *universe, int filen)
 		j++;
 		i++;
 	}
-	printf("%s\n", (char*)cords);
+	printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);
 	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
 	if (cords != 0)
 	{
@@ -75,7 +76,7 @@ void				simulation(t_octant *universe)
 	int		i;
 	
 	i = 0;
-	while (i < 4)
+	while (i < 1)
 	{
 	/*	for (size_t j = universe->start; j <= universe->end; j++)
 		{
@@ -177,6 +178,7 @@ t_body			*read_bodies(char *positions, char *velocities, size_t *nbodies)
 	
 	i = 0;
 	read(posfd, nbodies, sizeof(int64_t));
+	printf("nbodies %ld\n", *nbodies);
 	ret = (t_body*)malloc(sizeof(t_body) * (*nbodies + 1));
 	while (i <= *nbodies)
 	{
