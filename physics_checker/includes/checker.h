@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 18:25:59 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 18:57:01 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void			adjustposition(t_octant **newuniverse, size_t index);
 void			adjustvelocity(t_octant **newuniverse, size_t index, t_body body);
 void			adjustvelocity_nodes(t_octant **newuniverse, size_t index, const t_octant *node);
 double			findtotalmass(const t_octant *node);
-t_vector		findcenterofgravity(const t_octant *node);
+t_vector		findcenterofgravity(const t_octant *node, double combinedmass);
 
 #endif
 
