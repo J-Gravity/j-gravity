@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 19:13:19 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 21:13:08 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_t		gpu_y;	
 	mpf_t		gpu_z;
 	mpf_t		gpu_m;
+	mpf_t		temp;
 	double		cpu_mass;
 	float		gpu_mass;
 	int64_t		run;
@@ -56,37 +57,46 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_init2(gpu_y, 512);
 	mpf_init2(gpu_z, 512);
 	mpf_init2(gpu_m, 512);
+	mpf_init2(temp, 64);
 	while (read(cpucomp, &cpu_buf, sizeof(t_vector)))
 	{
 		read(cpucomp, &cpu_mass, sizeof(double));
-		mpf_add(cpu_m, cpu_m, cpu_mass);
-		mpf_add(cpu_x, cpu_x, cpu_buf.x * cpu_mass);
-		mpf_add(cpu_y, cpu_y, cpu_buf.y * cpu_mass);
-		mpf_add(cpu_z, cpu_z, cpu_buf.z * cpu_mass);
+		mpf_set_d(temp, cpu_mass);
+		mpf_add(cpu_m, cpu_m, temp);
+		mpf_set_d(temp, cpu_buf.x * cpu_mass);
+		mpf_add(cpu_x, cpu_x, temp);
+		mpf_set_d(temp, cpu_buf.y * cpu_mass);
+		mpf_add(cpu_y, cpu_y, temp);
+		mpf_set_d(temp, cpu_buf.z * cpu_mass);
+		mpf_add(cpu_z, cpu_z, temp);
 	}
-	mpf_div_ui(cpu_x, cpu_x, cpu_m);
-	mpf_div_ui(cpu_y, cpu_y, cpu_m);
-	mpf_div_ui(cpu_z, cpu_z, cpu_m);
+	mpf_div(cpu_x, cpu_x, cpu_m);
+	mpf_div(cpu_y, cpu_y, cpu_m);
+	mpf_div(cpu_z, cpu_z, cpu_m);
 	mpf_init2(gpu_x, 512);
 	mpf_init2(gpu_y, 512);
 	mpf_init2(gpu_z, 512);
 	mpf_init2(gpu_m, 512);
 	mpf_set_d(gpu_x, 0);
 	mpf_set_d(gpu_y, 0);
-	mpf_set_d(gpu_z. 0);
-	mpf_set_d(gpu_m. 0);
+	mpf_set_d(gpu_z, 0);
+	mpf_set_d(gpu_m, 0);
 	read(gpucomp, &run, sizeof(int64_t));
 	while (read(gpucomp, &gpu_buf, sizeof(t_fvector)))
 	{
 		read(gpucomp, &gpu_mass, sizeof(float));
-		mpf_add(gpu_m, gpu_m, gpu_mass);
-		mpf_add(gpu_x, gpu_x, gpu_buf.x * gpu_mass);
-		mpf_add(gpu_x, gpu_x, gpu_buf.y * gpu_mass);
-		mpf_add(gpu_x, gpu_x, gpu_buf.z * gpu_mass);
+		mpf_set_d(temp, gpu_mass);
+		mpf_add(gpu_m, gpu_m, temp);
+		mpf_set_d(temp, gpu_buf.x * gpu_mass);
+		mpf_add(gpu_x, gpu_x, temp);
+		mpf_set_d(temp, gpu_buf.y * gpu_mass);
+		mpf_add(gpu_x, gpu_x, temp);
+		mpf_set_d(temp, gpu_buf.z * gpu_mass);
+		mpf_add(gpu_x, gpu_x, temp);
 	}
-	mpf_div_ui(gpu_x, gpu_x, gpu_m);
-	mpf_div_ui(gpu_y, gpu_y, gpu_m);
-	mpf_div_ui(gpu_z, gpu_z, gpu_m);
+	mpf_div(gpu_x, gpu_x, gpu_m);
+	mpf_div(gpu_y, gpu_y, gpu_m);
+	mpf_div(gpu_z, gpu_z, gpu_m);
 	mpf_sub(cpu_x, cpu_x, gpu_x); 
 	mpf_sub(cpu_y, cpu_y, gpu_y); 
 	mpf_sub(cpu_z, cpu_z, gpu_z); 
@@ -105,6 +115,7 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_clear(gpu_y);
 	mpf_clear(gpu_z);
 	mpf_clear(gpu_m);
+	mpf_clear(temp);
 }
 
 /*
