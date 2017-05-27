@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:44:08 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 22:46:09 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ int				main(int argc, char **argv)
 	t_octant	*root;
 	size_t		nbodies;
 
+	(void)argc;
 	srand(time(NULL));
 	buf = malloc(0xFFFFFFFF); //reserve 4 gb of memory
 	if (!buf)
