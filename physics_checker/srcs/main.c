@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:29:52 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 22:33:02 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void			outresults(t_octant *universe, int filen)
 	buf = malloc(sizeof(int64_t) * 1);
 	*buf = universe->end - universe->start + 1;
 	write(fd, buf, sizeof(int64_t));
-	*buf = (int64_t)5.2;
-	cords = (double*)malloc(sizeof(double) * 3 * (universe->end - universe->start + 1));
+	cords = (double*)malloc(sizeof(double) * 4 * (universe->end - universe->start + 1));
 	if (!cords)
 	{
 		printf("ALLOC ERROR\n");
@@ -59,10 +58,12 @@ void			outresults(t_octant *universe, int filen)
 		j++;
 		cords[j] = universe->bodies[i].position.z;
 		j++;
+		cords[j] = universe->bodies[i].mass;
+		j++;
 		i++;
 	}
 	printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);
-	write(fd, cords, sizeof(double) * 3 * (universe->end - universe->start + 1));
+	write(fd, cords, sizeof(double) * 4 * (universe->end - universe->start + 1));
 	if (cords != 0)
 	{
 		free(cords);
