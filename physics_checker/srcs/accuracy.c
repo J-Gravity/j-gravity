@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 18:03:49 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 19:13:19 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,87 +30,145 @@ t_body			makebody(t_invector inpos, t_invector invel)
 	return (newbody);
 }
 
-t_body			*read_bodies(char *positions, char *velocities, size_t *nbodies)
-{
-	int			posfd = open(positions, O_RDONLY);
-	int			velfd = open(velocities, O_RDONLY);
-	t_body		*ret;
-	size_t		i;
-	t_invector	inpos;
-	t_invector	invel;
-
-	i = 0;
-	read(posfd, nbodies, sizeof(int64_t));
-	ret = (t_body*)malloc(sizeof(t_body) * (*nbodies + 1));
-	while (i <= *nbodies)
-	{
-		read(posfd, &inpos, sizeof(t_invector));
-		read(velfd, &invel, sizeof(t_invector));
-		ret[i] = makebody(inpos, invel);
-		i++;
-	}
-	return (ret);
-}
-
 void			accuracy_check(int cpucomp, int gpucomp)
 {
-	t_vector	buf;
-	t_fvector	cmpbuf;
-	mpf_t		bignum;
-	mpf_t		compare;
-	mpf_t		reg;
-	mpf_t		math;
+	t_vector	cpu_buf;
+	t_fvector	gpu_buf;
+	mpf_t		cpu_x;	
+	mpf_t		cpu_y;	
+	mpf_t		cpu_z;
+	mpf_t		cpu_m;
+	mpf_t		gpu_x;	
+	mpf_t		gpu_y;	
+	mpf_t		gpu_z;
+	mpf_t		gpu_m;
+	double		cpu_mass;
+	float		gpu_mass;
 	int64_t		run;
 
 	printf("|--------CALCULATING ACCURACY--------|\n");
 	read(cpucomp, &run, sizeof(int64_t));
-	run = 0;
-	mpf_init2(bignum, 512);
-	mpf_init2(compare, 512);
-	mpf_init2(math, 512);
-	mpf_init2(reg, 64);
-	mpf_set_d(bignum, 0);
-	mpf_set_d(compare, 0);
-	printf("CONFIRM\n");
-	while (read(cpucomp, &(buf), sizeof(t_vector)))
+	mpf_init2(cpu_x, 512);
+	mpf_init2(cpu_y, 512);
+	mpf_init2(cpu_z, 512);
+	mpf_init2(cpu_m, 512);
+	mpf_init2(gpu_x, 512);
+	mpf_init2(gpu_y, 512);
+	mpf_init2(gpu_z, 512);
+	mpf_init2(gpu_m, 512);
+	while (read(cpucomp, &cpu_buf, sizeof(t_vector)))
 	{
-	//	printf("RUN: %lld\n", run);
-	//	printf("%.40lf, %.40lf, %lf, %lf, %lf\n", mpf_get_d(compare), finddist(buf), buf.x, buf.y, buf.z);
-		mpf_set_d(reg, finddist(buf));
-		printf("paus\n");
-		mpf_add(compare, compare, reg);
-		run++;
+		read(cpucomp, &cpu_mass, sizeof(double));
+		mpf_add(cpu_m, cpu_m, cpu_mass);
+		mpf_add(cpu_x, cpu_x, cpu_buf.x * cpu_mass);
+		mpf_add(cpu_y, cpu_y, cpu_buf.y * cpu_mass);
+		mpf_add(cpu_z, cpu_z, cpu_buf.z * cpu_mass);
 	}
-	printf("CALCULATED CPU SAMPLESET\n\n\n");
-	mpf_div_ui(compare, compare, run);
+	mpf_div_ui(cpu_x, cpu_x, cpu_m);
+	mpf_div_ui(cpu_y, cpu_y, cpu_m);
+	mpf_div_ui(cpu_z, cpu_z, cpu_m);
+	mpf_init2(gpu_x, 512);
+	mpf_init2(gpu_y, 512);
+	mpf_init2(gpu_z, 512);
+	mpf_init2(gpu_m, 512);
+	mpf_set_d(gpu_x, 0);
+	mpf_set_d(gpu_y, 0);
+	mpf_set_d(gpu_z. 0);
+	mpf_set_d(gpu_m. 0);
 	read(gpucomp, &run, sizeof(int64_t));
-	run = 0;
-	printf("DEBUGGY\n");
-	while (read(gpucomp, &cmpbuf, sizeof(t_fvector)))
+	while (read(gpucomp, &gpu_buf, sizeof(t_fvector)))
 	{
-		printf("RUN: %lld\n", run);
-		buf.x = cmpbuf.x;
-		buf.y = cmpbuf.y;
-		buf.z = cmpbuf.z;
-		mpf_set_d(reg, finddist(buf));
-		mpf_add(bignum, bignum, reg);
-		run++;
-		if (1 > read(gpucomp, &cmpbuf, sizeof(float)))
-			break ;
+		read(gpucomp, &gpu_mass, sizeof(float));
+		mpf_add(gpu_m, gpu_m, gpu_mass);
+		mpf_add(gpu_x, gpu_x, gpu_buf.x * gpu_mass);
+		mpf_add(gpu_x, gpu_x, gpu_buf.y * gpu_mass);
+		mpf_add(gpu_x, gpu_x, gpu_buf.z * gpu_mass);
 	}
-	printf("CALCULATED GPU SAMPLESET\n\n\n");
-	mpf_div_ui(bignum, bignum, run);
-	mpf_add(math, bignum, compare);
-	mpf_div_ui(math, math, 2);
-	mpf_sub(bignum, bignum, compare);
-	mpf_abs(bignum, bignum);
-	mpf_div(bignum, bignum, math);
-	mpf_mul_ui(bignum, bignum, 100);
-	printf("DEVIATION : %lf%%\n", mpf_get_d(bignum));
-	mpf_clear(bignum);
-	mpf_clear(reg);
+	mpf_div_ui(gpu_x, gpu_x, gpu_m);
+	mpf_div_ui(gpu_y, gpu_y, gpu_m);
+	mpf_div_ui(gpu_z, gpu_z, gpu_m);
+	mpf_sub(cpu_x, cpu_x, gpu_x); 
+	mpf_sub(cpu_y, cpu_y, gpu_y); 
+	mpf_sub(cpu_z, cpu_z, gpu_z); 
+	mpf_pow_ui(cpu_x, cpu_x, 2);
+	mpf_pow_ui(cpu_y, cpu_y, 2);
+	mpf_pow_ui(cpu_z, cpu_z, 2);
+	mpf_add(cpu_x, cpu_x, cpu_y);
+	mpf_add(cpu_x, cpu_x, cpu_z);
+	mpf_sqrt(cpu_x, cpu_x);
+	printf("DEVIATION: %lf", mpf_get_d(cpu_x));
+	mpf_clear(cpu_x);
+	mpf_clear(cpu_y);
+	mpf_clear(cpu_z);
+	mpf_clear(cpu_m);
+	mpf_clear(gpu_x);
+	mpf_clear(gpu_y);
+	mpf_clear(gpu_z);
+	mpf_clear(gpu_m);
 }
 
+/*
+ * void			accuracy_check(int cpucomp, int gpucomp)
+ * {
+ * 	t_vector	buf;
+ * 		t_fvector	cmpbuf;
+ * 			mpf_t		bignum;
+ * 				mpf_t		compare;
+ * 					mpf_t		reg_x;
+ * 						mpf_t		reg_y;
+ * 							mpf_t		reg_z;
+ * 								mpf_t		math;
+ * 									int64_t		run;
+ *
+ * 										printf("|--------CALCULATING ACCURACY--------|\n");
+ * 											read(cpucomp, &run, sizeof(int64_t));
+ * 												run = 0;
+ * 													mpf_init2(bignum, 512);
+ * 														mpf_init2(compare, 512);
+ * 															mpf_init2(math, 512);
+ * 																mpf_init2(reg, 64);
+ * 																	mpf_set_d(bignum, 0);
+ * 																		mpf_set_d(compare, 0);
+ * 																			printf("CONFIRM\n");
+ * 																				while (read(cpucomp, &(buf), sizeof(t_vector)))
+ * 																					{
+ * 																						//	printf("RUN: %lld\n", run);
+ * 																							//	printf("%.40lf, %.40lf, %lf, %lf, %lf\n", mpf_get_d(compare), finddist(buf), buf.x, buf.y, buf.z);
+ * 																									mpf_set_d(reg, finddist(buf));
+ * 																											printf("paus\n");
+ * 																													mpf_add(compare, compare, reg);
+ * 																															run++;
+ * 																																}
+ * 																																	printf("CALCULATED CPU SAMPLESET\n\n\n");
+ * 																																		mpf_div_ui(compare, compare, run);
+ * 																																			read(gpucomp, &run, sizeof(int64_t));
+ * 																																				run = 0;
+ * 																																					printf("DEBUGGY\n");
+ * 																																						while (read(gpucomp, &cmpbuf, sizeof(t_fvector)))
+ * 																																							{
+ * 																																									printf("RUN: %lld\n", run);
+ * 																																											buf.x = cmpbuf.x;
+ * 																																													buf.y = cmpbuf.y;
+ * 																																															buf.z = cmpbuf.z;
+ * 																																																	mpf_set_d(reg, finddist(cmpbuf));
+ * 																																																			mpf_add(bignum, bignum, reg);
+ * 																																																					run++;
+ * 																																																							if (1 > read(gpucomp, &cmpbuf, sizeof(float)))
+ * 																																																										break ;
+ * 																																																											}
+ * 																																																												printf("CALCULATED GPU SAMPLESET\n\n\n");
+ * 																																																													mpf_div_ui(bignum, bignum, run);
+ * 																																																														mpf_add(math, bignum, compare);
+ * 																																																															mpf_div_ui(math, math, 2);
+ * 																																																																mpf_sub(bignum, bignum, compare);
+ * 																																																																	mpf_abs(bignum, bignum);
+ * 																																																																		mpf_div(bignum, bignum, math);
+ * 																																																																			mpf_mul_ui(bignum, bignum, 100);
+ * 																																																																				printf("DEVIATION : %lf%%\n", mpf_get_d(bignum));
+ * 																																																																					mpf_clear(bignum);
+ * 																																																																						mpf_clear(reg);
+ * 																																																																						}
+ * 																																																																						*/
 int			main(int argc, char **argv)
 {
 	accuracy_check(open(argv[1], O_RDONLY), open(argv[2], O_RDONLY));
