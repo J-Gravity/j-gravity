@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:58:00 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 23:08:15 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ void			outresults(t_octant *universe, int filen)
 	}
 	printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);
 	write(fd, cords, sizeof(double) * 4 * (universe->end - universe->start + 1));
-	if (cords != 0)
-	{
-		free(cords);
-	}
+	free(cords);
 	free(filename);
 	free(buf);
 }
