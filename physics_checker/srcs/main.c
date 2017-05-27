@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 23:08:15 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/26 23:30:23 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void			outresults(t_octant *universe, int filen)
 		j++;
 		cords[j] = universe->bodies[i].mass;
 		j++;
-		printf("CORDS: x: %lf, y: %lf, z: %lf, m: %lf\n", cords[j - 4], cords[j - 3], cords[j - 2], cords[j - 1]);
+	//	if (i == 71523 || i == 71522 || i == 71524)
+//			printf("CORDS: x: %lf, y: %lf, z: %lf, m: %lf\n", cords[j - 4], cords[j - 3], cords[j - 2], cords[j - 1]);
 		i++;
 	}
 	printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);

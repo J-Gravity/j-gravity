@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 19:21:43 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 23:02:07 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/26 23:39:44 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ t_vector	force3d(t_body mass1, t_body mass2)
 	force.z = (G * ABS(mass1.mass * mass2.mass))/denominator;
 	//printf("mass2: %.40lf\n", mass2.mass);
 	//printf("DEBUG %.40lf, %.40lf, %.40lf, %.40lf, %.40lf\n", force.x, denominator, G, mass1.mass, mass2.mass);
-	force.x *= (ABS(mass2.position.x - mass1.position.x)) / ABS(mass2.position.x - mass1.position.x);
-	force.y *= (ABS(mass2.position.y - mass1.position.y)) / ABS(mass2.position.y - mass1.position.y);
-	force.z *= (ABS(mass2.position.z - mass1.position.z)) / ABS(mass2.position.z - mass1.position.z);
+	force.x *= (mass2.position.x - mass1.position.x);
+	force.y *= (mass2.position.y - mass1.position.y);
+	force.z *= (mass2.position.z - mass1.position.z);
 	//printf("DEBUG %.40lf\n", force.x);
+	if (force.x != force.x || force.y != force.y || force.z != force.z)
+		printf("in force calculation, nan as occured\n");
 	return (force);
 }
 
@@ -79,6 +81,8 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 	t_vector	f;
 
 	f = force3d(PARTICLE, body);
+	if (f.x != f.x || f.y != f.y || f.z != f.z || PARTICLE.mass != PARTICLE.mass)
+		printf("FORCE: NAN\n");
 	if (body.mass < 0 && PARTICLE.mass < 0)
 	{
 		PARTICLE.velocity.x += ((f.x)/(ABS(PARTICLE.mass))) * TIMESTEP;
@@ -91,6 +95,11 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 		PARTICLE.velocity.y += ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 		PARTICLE.velocity.z += ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 	}
+	if (PARTICLE.velocity.x != PARTICLE.velocity.x || 
+		PARTICLE.velocity.y != PARTICLE.velocity.y ||
+		PARTICLE.velocity.z != PARTICLE.velocity.z)
+		printf("adjustvelocity: NAN occurred\n");
+
 	//printf("DEBUG PARTICLE: %ld %.20lf\n", prtc, PARTICLE.velocity.x);
 }
 
@@ -125,4 +134,8 @@ void		adjustposition(t_octant **newuniverse, size_t prtc)
 	PARTICLE.position.x += (PARTICLE.velocity.x);
 	PARTICLE.position.y += (PARTICLE.velocity.y);
 	PARTICLE.position.z += (PARTICLE.velocity.z);
+	if (PARTICLE.position.x != PARTICLE.position.x || 
+		PARTICLE.position.y != PARTICLE.position.y ||
+		PARTICLE.position.z != PARTICLE.position.z)
+		printf("NAN occurred\n");
 }

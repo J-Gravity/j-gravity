@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:54:36 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/26 23:11:02 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	{
 		printf("%lld\n", run);
 		read(cpucomp, &cpu_mass, sizeof(double));
+		if (run == 71523)
+			printf("(%lf, %lf, %lf) at %lf\n", cpu_buf.x, cpu_buf.y, cpu_buf.z, cpu_mass);
 		mpf_set_d(temp, cpu_mass);
 		mpf_add(cpu_m, cpu_m, temp);
 		mpf_set_d(temp, cpu_buf.x * cpu_mass);
