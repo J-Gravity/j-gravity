@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 23:49:30 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/27 18:32:53 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void				simulation(t_octant *universe)
 	int		i;
 	
 	i = 0;
-	while (i < 1)
+	while (i < 10000)
 	{
 	/*	for (size_t j = universe->start; j <= universe->end; j++)
 		{
@@ -93,8 +93,6 @@ void				simulation(t_octant *universe)
 		} */
 
 		universe = barnes_hut(universe);
-		outresults(universe, i);
-		//slowoutput(universe, i);
 		//printf("%zu, %zu\n", universe->start, universe->end);
 /*		for (size_t j = universe->start; j <= universe->end; j++)
 		{
@@ -110,6 +108,7 @@ void				simulation(t_octant *universe)
 		} */
 		i++;
 	}
+	outresults(universe, i);
 }
 
 double				rand_double(double max)
