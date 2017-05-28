@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 22:28:28 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/27 18:29:36 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct	s_body
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
-	t_vector	force;
 	char		octant;
 }				t_body;
 
