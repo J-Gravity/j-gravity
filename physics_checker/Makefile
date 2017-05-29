@@ -6,7 +6,7 @@
 #    By: elee <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/27 21:33:26 by elee              #+#    #+#              #
-#    Updated: 2017/05/26 22:52:22 by elee             ###   ########.fr        #
+#    Updated: 2017/05/28 17:38:20 by smifsud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ $(NAME): $(CHECKER)
 	mkdir -p build/
 	$(CC) $(CFLAGS) -c $(addprefix srcs/, $(SRCS)) -I$(INCS)
 	mv $(OBJS) build/
-	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64
+	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64 -fsanitize=address
 
 $(CHECKER):
 	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER)
