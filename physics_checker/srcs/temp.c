@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/29 11:07:41 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/29 14:05:53 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_init2(diff_z, 128);
 	mpf_init2(diff_all, 128);
 	mpf_init2(total, 512);
-	run = 0;
     while (read(cpucomp, &cpu_buf, sizeof(t_vector)) && read(gpucomp, &gpu_buf, sizeof(t_fvector)))
     {
         read(cpucomp, &cpu_mass, sizeof(double));
@@ -73,10 +72,10 @@ void			accuracy_check(int cpucomp, int gpucomp)
         mpf_add(diff_all, diff_all, diff_y);
         mpf_add(diff_all, diff_all, diff_z);
         mpf_sqrt(diff_all, diff_all);
-        mpf_add(total, diff_all);
+        mpf_add(total, total, diff_all);
     }
-    mpf_div(total, total, run_cpu);
-    printf("DEVIATION: %lf", mpf_get_d(total));
+    mpf_div_ui(total, total, run_cpu);
+    printf("DEVIATION: %lf\n", mpf_get_d(total));
 	mpf_clear(diff_x);
 	mpf_clear(diff_y);
 	mpf_clear(diff_z);

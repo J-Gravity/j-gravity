@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/29 10:48:15 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/29 14:04:05 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ t_body          *copybodies(t_body *bodies, size_t len)
     t_body  *new;
 
     new = (t_body*)malloc(sizeof(t_body) * len);
-    for (size_t i = 0; i < len, i++)
+    for (size_t i = 0; i < len; i++)
     {
-        new[i].position = bodies.position;
-        new[i].velocity = bodies.velocity;
-        new[i].id = bodies.id;
-        new[i].mass = mass;
-        new[i].octant = octant;
+        new[i].position = bodies[i].position;
+        new[i].velocity = bodies[i].velocity;
+        new[i].id = bodies[i].id;
+        new[i].mass = bodies[i].mass;
+        new[i].octant = bodies[i].octant;
     }
     return (new);
 }
@@ -111,7 +111,7 @@ void				simulation(t_octant *universe)
     int		i;
 
     i = 0;
-    while (i < 10000)
+    while (i < 1)
     {
         /*	for (size_t j = universe->start; j <= universe->end; j++)
             {
