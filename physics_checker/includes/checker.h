@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/28 17:59:30 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/29 10:16:39 by elee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct	s_invector
 
 typedef struct	s_body
 {
+    size_t      id;
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
