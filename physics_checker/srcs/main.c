@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/27 18:32:53 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/28 17:58:52 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ void				simulation(t_octant *universe)
 			universe->bodies[j].velocity.z,
 			universe->bodies[j].mass);
 		} */
-
+		printf("OK %d\n", i);
 		universe = barnes_hut(universe);
+		re_tree(universe);
+		octree_divide(universe);
 		//printf("%zu, %zu\n", universe->start, universe->end);
 /*		for (size_t j = universe->start; j <= universe->end; j++)
 		{

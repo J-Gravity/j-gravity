@@ -6,7 +6,7 @@
 /*   By: elee <elee@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:46:04 by elee              #+#    #+#             */
-/*   Updated: 2017/05/26 15:21:54 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/28 17:58:30 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,5 +226,25 @@ void		print_tree(t_octant *root)
 	{
 		print_tree(root->children[i]);
 		i++;
+	}
+}
+
+void	re_tree(t_octant *root)
+{
+	int		i;
+
+	if (root == 0)
+		return ;
+	if (root->end < root->start)
+		return ;
+	i = 0;
+	while (i < 0)
+	{
+		re_tree(root->children[i]);
+	}
+	if (root->parent != 0)
+	{
+		free(root->children);
+		free(root);
 	}
 }
