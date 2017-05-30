@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/29 14:04:05 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/30 12:56:56 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void				simulation(t_octant *universe)
     int		i;
 
     i = 0;
-    while (i < 1)
+    while (i < 10000)
     {
         /*	for (size_t j = universe->start; j <= universe->end; j++)
             {
