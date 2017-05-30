@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/30 12:56:56 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/30 13:22:12 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void				simulation(t_octant *universe)
     int		i;
 
     i = 0;
-    while (i < 10000)
+    while (i < 30000)
     {
         /*	for (size_t j = universe->start; j <= universe->end; j++)
             {
@@ -127,8 +127,9 @@ void				simulation(t_octant *universe)
             } */
         printf("OK %d\n", i);
         universe = barnes_hut(universe);
+/*		this causes linux to kill the process due to system resource usage
         re_tree(universe);
-        octree_divide(universe);
+        octree_divide(universe); */
         //printf("%zu, %zu\n", universe->start, universe->end);
         /*		for (size_t j = universe->start; j <= universe->end; j++)
                 {
