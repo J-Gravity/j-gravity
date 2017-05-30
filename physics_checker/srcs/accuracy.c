@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 23:11:02 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/30 15:12:28 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	read(gpucomp, &run, sizeof(int64_t));
 	while (read(gpucomp, &gpu_buf, sizeof(t_fvector)))
 	{
+		printf("debug\n");
 		read(gpucomp, &gpu_mass, sizeof(float));
 		mpf_set_d(temp, gpu_mass);
 		mpf_add(gpu_m, gpu_m, temp);
