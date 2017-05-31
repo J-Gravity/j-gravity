@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/29 10:16:39 by elee             ###   ########.fr       */
+/*   Updated: 2017/05/31 16:25:05 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_body			*sortbodies(t_body *bodies);
 t_body			*getbodies(int fd, int64_t nbodies);
 
 t_octant		*barnes_hut(t_octant *root);
+t_octant		*brute_force(t_octant *root);
 
 void			adjustposition(t_octant **newuniverse, size_t index);
 void			adjustvelocity(t_octant **newuniverse, size_t index, t_body body);

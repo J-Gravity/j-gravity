@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/30 16:14:04 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/31 16:23:11 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ void				simulation(t_octant *universe)
             universe->bodies[j].mass);
             } */
         printf("OK %d\n", i);
-        universe = barnes_hut(universe);
+        //universe = barnes_hut(universe);
+		universe = brute_force(universe);
 /*		this causes linux to kill the process due to system resource usage
         re_tree(universe);
         octree_divide(universe); */
