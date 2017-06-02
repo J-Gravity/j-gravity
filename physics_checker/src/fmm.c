@@ -73,3 +73,8 @@ void	directcompare(t_octant *universe)
 {
 	//directly compare the particles of all nodes that share roots parents.
 }
+
+void	fmm_real()
+{
+	
+}
