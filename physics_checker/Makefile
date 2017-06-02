@@ -6,7 +6,7 @@
 #    By: elee <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/27 21:33:26 by elee              #+#    #+#              #
-#    Updated: 2017/06/02 16:40:29 by smifsud          ###   ########.fr        #
+#    Updated: 2017/06/02 16:44:14 by smifsud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,10 +38,12 @@ $(NAME): $(CHECKER)
 	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64 -lm -std=c99
 
 $(CHECKER):
-	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER) -lm
+	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $@ -lm
 
 $(GPUACC):
-	gcc srcs/gpuaccuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER) -lm
+	gcc srcs/gpuaccuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $@ -lm
+
+checkers: $(GPUACC) $(CHECKER)
 
 clean:
 	/bin/rm -rf build
@@ -49,6 +51,7 @@ clean:
 fclean: clean
 	/bin/rm -f $(NAME)
 	rm -f $(CHECKER)
+	rm -f $(GPUACC)
 
 re: fclean all
 
