@@ -12,9 +12,12 @@
 
 #include <checker.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define M (*newuniverse)->bodies[prtc].mass
 #define PARTICLE (*newuniverse)->bodies[prtc]
+
+//pow won't work on windows for whatever inane reason the _exp10 macro isn't recognised.
 
 t_vector	force3d(t_body mass1, t_body mass2)
 {

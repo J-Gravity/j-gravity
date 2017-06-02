@@ -26,7 +26,7 @@
 
 # define ABS(x) (x < 0 ? -x : x)
 #define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
-#define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
+//#define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
 //FORCE3D is in the form vector component, body being acted upon, source body
 
 typedef struct	s_vector
