@@ -26,14 +26,14 @@ CHECKER = accuracy_checker
 
 all: $(NAME)
 
-$(NAME): $(CHECKER)
+$(NAME):
 	mkdir -p build/
 	$(CC) $(CFLAGS) -c $(addprefix srcs/, $(SRCS)) -I$(INCS)
 	mv $(OBJS) build/
-	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64
+	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64 -lm
 
 $(CHECKER):
-	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER)
+	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER) -lm
 
 clean:
 	/bin/rm -rf build

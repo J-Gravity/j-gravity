@@ -1,1 +1,0 @@
-../mpn/x86_64/coreisbr/aors_n.asm
