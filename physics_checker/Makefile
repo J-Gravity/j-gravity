@@ -30,7 +30,7 @@ $(NAME):
 	mkdir -p build/
 	$(CC) $(CFLAGS) -c $(addprefix srcs/, $(SRCS)) -I$(INCS)
 	mv $(OBJS) build/
-	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64 -lm
+	gcc $(addprefix build/, $(OBJS)) -o $(NAME) -m64 -lm -std=c99
 
 $(CHECKER):
 	gcc srcs/accuracy.c srcs/bodies.c srcs/misc.c libgmp.a -I $(INCS) -m64 -o $(CHECKER) -lm

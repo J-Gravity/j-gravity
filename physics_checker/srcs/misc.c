@@ -14,6 +14,21 @@
 #include <stdlib.h>
 #include <math.h>
 
+double		pow10(double x)
+{
+	double	i;
+	double	num;
+	
+	i = 0;
+	num = 1;
+	while (i < x)
+	{
+		num * 10;
+		i++;
+	}
+	return (num);
+}
+
 size_t		array_len(void *ptr, size_t datasize)
 {
 	size_t	ret;

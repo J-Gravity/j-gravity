@@ -30,15 +30,19 @@ void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 t_body          *copybodies(t_body *bodies, size_t len)
 {
     t_body  *new;
+	size_t i;
+
+	i = 0;
 
     new = (t_body*)malloc(sizeof(t_body) * len);
-    for (size_t i = 0; i < len; i++)
+    while (i < len)
     {
         new[i].position = bodies[i].position;
         new[i].velocity = bodies[i].velocity;
         new[i].id = bodies[i].id;
         new[i].mass = bodies[i].mass;
         new[i].octant = bodies[i].octant;
+        i++;
     }
     return (new);
 }
@@ -155,40 +159,6 @@ double				rand_double(double max)
 
     r = (double)rand() / (double)(RAND_MAX/max);
     return (r);
-}
-
-t_body			rand_body(int mag)
-{
-    t_body		body;
-    double		elevation;
-    double		azimuth;
-    double		radius;
-    t_vector	velocity;
-
-    elevation = asin(rand_double(2) - 1);
-    azimuth = 2 * M_PI * rand_double(1);
-    radius = cbrt(rand_double(1)) * __exp10(mag);
-    body.position = (t_vector){radius * cos(elevation) * cos(azimuth), \
-        radius * cos(elevation) * sin(azimuth),
-        0.3 * radius * sin(elevation)};
-    velocity.x = 1;
-    velocity.y = 0;
-    velocity.z = rand_double(2);
-    body.velocity = velocity;
-    body.mass = 10000000000000000.0;
-    return (body);
-}
-
-t_body			*create_bodies(size_t num_bodies, int mag)
-{
-    t_body	*bodies;
-
-    bodies = (t_body*)malloc(sizeof(t_body) * num_bodies);
-    for (size_t i = 0; i < num_bodies; i++)
-    {
-        bodies[i] = rand_body(mag);
-    }
-    return (bodies);
 }
 
 t_body			makebody(t_invector inpos)
