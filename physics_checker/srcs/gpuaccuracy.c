@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/06/02 16:38:45 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/06/02 16:41:29 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_body			makebody(t_invector inpos, t_invector invel)
 	return (newbody);
 }
 
-void			accuracy_check_gu(int cpucomp, int gpucomp)
+void			accuracy_check_gpu(int cpucomp, int gpucomp)
 {
 	t_fvector	cpu_buf;
 	t_fvector	gpu_buf;
@@ -61,7 +61,7 @@ void			accuracy_check_gu(int cpucomp, int gpucomp)
 	mpf_init2(temp, 64);
 	printf("%lld\n", run);
 	run = 0;
-	while (read(cpucomp, &cpu_buf, sizeof(t_ifvector)))
+	while (read(cpucomp, &cpu_buf, sizeof(t_fvector)))
 	{
 		printf("%lld\n", run);
 		read(cpucomp, &cpu_mass, sizeof(float));
@@ -192,6 +192,6 @@ void			accuracy_check_gu(int cpucomp, int gpucomp)
  * 																																																																						*/
 int			main(int argc, char **argv)
 {
-	accuracy_check(open(argv[1], O_RDONLY), open(argv[2], O_RDONLY));
+	accuracy_check_gpu(open(argv[1], O_RDONLY), open(argv[2], O_RDONLY));
 	return (0);
 }
