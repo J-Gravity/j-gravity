@@ -12,26 +12,25 @@
 
 #include <checker.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define M (*newuniverse)->bodies[prtc].mass
 #define PARTICLE (*newuniverse)->bodies[prtc]
+
+//pow won't work on windows for whatever inane reason the _exp10 macro isn't recognised.
 
 t_vector	force3d(t_body mass1, t_body mass2)
 {
 	t_vector	force;
 	double		denominator;
 
-	//printf("position1: %lf, position2: %lf\n", mass1.position.x, mass2.position.x);
 	denominator = pow(vectordist(mass1.position, mass2.position), 3);
 	force.x = (G * ABS(mass1.mass * mass2.mass))/denominator;
 	force.y = (G * ABS(mass1.mass * mass2.mass))/denominator;
 	force.z = (G * ABS(mass1.mass * mass2.mass))/denominator;
-	//printf("mass2: %.40lf\n", mass2.mass);
-	//printf("DEBUG %.40lf, %.40lf, %.40lf, %.40lf, %.40lf\n", force.x, denominator, G, mass1.mass, mass2.mass);
 	force.x *= (mass2.position.x - mass1.position.x);
 	force.y *= (mass2.position.y - mass1.position.y);
 	force.z *= (mass2.position.z - mass1.position.z);
-	//printf("DEBUG %.40lf\n", force.x);
 	if (force.x != force.x || force.y != force.y || force.z != force.z)
 		printf("in force calculation, nan as occured\n");
 	return (force);

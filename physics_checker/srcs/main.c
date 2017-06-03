@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/31 16:23:11 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/06/02 16:31:27 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,19 @@ void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 t_body          *copybodies(t_body *bodies, size_t len)
 {
     t_body  *new;
+	size_t i;
+
+	i = 0;
 
     new = (t_body*)malloc(sizeof(t_body) * len);
-    for (size_t i = 0; i < len; i++)
+    while (i < len)
     {
         new[i].position = bodies[i].position;
         new[i].velocity = bodies[i].velocity;
         new[i].id = bodies[i].id;
         new[i].mass = bodies[i].mass;
         new[i].octant = bodies[i].octant;
+        i++;
     }
     return (new);
 }
@@ -111,7 +115,7 @@ void				simulation(t_octant *universe)
     int		i;
 
     i = 0;
-    while (i < 10000)
+    while (i < 30000)
     {
         /*	for (size_t j = universe->start; j <= universe->end; j++)
             {
@@ -126,8 +130,8 @@ void				simulation(t_octant *universe)
             universe->bodies[j].mass);
             } */
         printf("OK %d\n", i);
-        //universe = barnes_hut(universe);
-		universe = brute_force(universe);
+        universe = barnes_hut(universe);
+		//universe = brute_force(universe);
 /*		this causes linux to kill the process due to system resource usage
         re_tree(universe);
         octree_divide(universe); */
@@ -155,40 +159,6 @@ double				rand_double(double max)
 
     r = (double)rand() / (double)(RAND_MAX/max);
     return (r);
-}
-
-t_body			rand_body(int mag)
-{
-    t_body		body;
-    double		elevation;
-    double		azimuth;
-    double		radius;
-    t_vector	velocity;
-
-    elevation = asin(rand_double(2) - 1);
-    azimuth = 2 * M_PI * rand_double(1);
-    radius = cbrt(rand_double(1)) * __exp10(mag);
-    body.position = (t_vector){radius * cos(elevation) * cos(azimuth), \
-        radius * cos(elevation) * sin(azimuth),
-        0.3 * radius * sin(elevation)};
-    velocity.x = 1;
-    velocity.y = 0;
-    velocity.z = rand_double(2);
-    body.velocity = velocity;
-    body.mass = 10000000000000000.0;
-    return (body);
-}
-
-t_body			*create_bodies(size_t num_bodies, int mag)
-{
-    t_body	*bodies;
-
-    bodies = (t_body*)malloc(sizeof(t_body) * num_bodies);
-    for (size_t i = 0; i < num_bodies; i++)
-    {
-        bodies[i] = rand_body(mag);
-    }
-    return (bodies);
 }
 
 t_body			makebody(t_invector inpos)
