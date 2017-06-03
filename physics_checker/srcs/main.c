@@ -114,7 +114,7 @@ void				simulation(t_octant *universe)
     int		i;
 
     i = 0;
-    while (i < 30000)
+    while (i < 50000)
     {
         /*	for (size_t j = universe->start; j <= universe->end; j++)
             {
