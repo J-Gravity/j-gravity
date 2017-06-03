@@ -26,12 +26,12 @@ CHECKER = accuracy_checker
 
 GPUACC = gpu_checker
 
-all: $(NAME)
+all: $(NAME) $(CHECKER)
 
 windows:
 	gcc srcs/main.c srcs/physics.c srcs/bodies.c srcs/misc.c srcs/octree.c srcs/barnes_hut.c -m64 -lm -o physics -std=c99 -I includes/ -D_GNU_SOURCE
 
-$(NAME): $(CHECKER)
+$(NAME):
 	mkdir -p build/
 	$(CC) $(CFLAGS) -c $(addprefix srcs/, $(SRCS)) -I$(INCS)
 	mv $(OBJS) build/

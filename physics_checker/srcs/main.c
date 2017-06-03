@@ -78,7 +78,6 @@ void			outresults(t_octant *universe, int filen)
     fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH | S_IRGRP | S_IWGRP);
     buf = malloc(sizeof(int64_t) * 1);
     *buf = universe->end - universe->start + 1;
-    printf("%lld\n", *buf);
     write(fd, buf, sizeof(int64_t));
     cords = (double*)malloc(sizeof(double) * 4 * (universe->end - universe->start + 1));
     if (!cords)

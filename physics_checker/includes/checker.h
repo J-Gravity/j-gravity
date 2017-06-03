@@ -22,7 +22,7 @@
 
 # define TIMESTEP 1.0
 //#define G 0.000000000066742
-#define G 1.327 * __exp10(13) //kilometers, solar masses, (km/s)^2
+#define G (1.327 * pow(10, 13)) //kilometers, solar masses, (km/s)^2
 
 # define ABS(x) (x < 0 ? -x : x)
 #define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
