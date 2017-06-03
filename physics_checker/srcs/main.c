@@ -147,9 +147,12 @@ void				simulation(t_octant *universe)
                 universe->bodies[j].velocity.z,
                 universe->bodies[j].mass);
                 } */
+	if (i % 10000 == 0)
+	{
+		outresults(universe, i);
+	}
         i++;
     }
-    outresults(universe, i);
 }
 
 double				rand_double(double max)
