@@ -129,8 +129,8 @@ void				simulation(t_octant *universe)
             universe->bodies[j].mass);
             } */
         printf("OK %d\n", i);
-        universe = barnes_hut(universe);
-		//universe = brute_force(universe);
+       // universe = barnes_hut(universe);
+	universe = brute_force(universe);
 /*		this causes linux to kill the process due to system resource usage
         re_tree(universe);
         octree_divide(universe); */
