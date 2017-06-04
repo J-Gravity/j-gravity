@@ -120,14 +120,16 @@ t_octant	*brute_force(t_octant *universe)
 		return (0);
 	while (i <= universe->end)
 	{
-		bh(endtree(universe, i), universe, i);
-		i++;
 		j = universe->start;
 		while (j <= universe->end)
 		{
-			adjustvelocity(&universe, i, universe->bodies[j]);
+			if (j != i)
+			{
+				adjustvelocity(&universe, i, universe->bodies[j]);
+			}
 			j++;
 		}
+		i++;
 	}
 	i = universe->start;
 	while (i <= universe->end)
