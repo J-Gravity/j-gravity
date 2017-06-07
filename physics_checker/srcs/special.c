@@ -1,5 +1,7 @@
 #include <checker.h>
 
+double	c = 299792458;
+#define C c
 #define CSQ (C * C)
 #define BETA(V) (V / C)
 #define GAMMA(V) (1 / (1 - (BETA * BETA)))
