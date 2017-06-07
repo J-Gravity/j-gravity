@@ -29,7 +29,7 @@ GPUACC = gpu_checker
 all: $(NAME) $(CHECKER)
 
 windows:
-	gcc srcs/main.c srcs/physics.c srcs/bodies.c srcs/misc.c srcs/octree.c srcs/barnes_hut.c -m64 -lm -o physics -std=c99 -I includes/ -D_GNU_SOURCE
+	gcc srcs/special.c srcs/main.c srcs/physics.c srcs/bodies.c srcs/misc.c srcs/octree.c srcs/barnes_hut.c -m64 -lm -o physics -std=c99 -I includes/ -D_GNU_SOURCE
 
 $(NAME):
 	mkdir -p build/

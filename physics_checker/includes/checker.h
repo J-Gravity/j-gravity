@@ -104,6 +104,14 @@ void			adjustvelocity_nodes(t_octant **newuniverse, size_t index, const t_octant
 double			findtotalmass(const t_octant *node);
 t_vector		findcenterofgravity(const t_octant *node, double combinedmass);
 
+double			sr_relativistic_mass(double m, double p);
+double			sr_mass_increase(double m, double v);
+double			sr_velocity_addition(double u_prime, double v);
+double			sr_length_contraction(double l, double v);
+double			sr_time_dilation(double t, double v);
+double			sr_momentum(double m, double v);
+double			sr_lorentz_boost_direction(double d, double dvel, double *t);
+
 #endif
 
 

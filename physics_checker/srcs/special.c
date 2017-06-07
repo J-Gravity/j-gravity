@@ -1,3 +1,5 @@
+#include <checker.h>
+
 #define CSQ (C * C)
 #define BETA(V) (V / C)
 #define GAMMA(V) (1 / (1 - (BETA * BETA)))
@@ -5,10 +7,20 @@
 
 //v is the magnitude of the relative velocity note that for some fucktard reason an italicized v is used to rperesent the magnitude while a non-italicized v is used to represent the relative velocity
 
-void		sr_mass_increase(double m, double v)
+//So e = mc^2 is actually refers to relativistic mass and therefore is wrong for rest mass with is what we store and most physicists do math with. We can derive the relativistic mass though.
+//e = m * c^2 = sqrt(p^2 * c^2 + m^2 * c^4)
+//and then MR = e / c^2
+//p means momentum
+double		sr_relativistic_mass(double m, double p)
+{
+	double	e;
+	e = sqrt(p * p * C * C + m * m * C * C * C * C)
+	return (e /(C * C));
+}
+double		sr_mass_increase(double m, double v)
 {
 	//mass equals 1 - v squared over C squared to the inverse half power times mass at rest frame. (or atomic mass, they both use the same fucking symbol)
-	return (pow((1 - ((v * v)/ CSQ)), -0.5) * m)
+	return (pow((1 - ((v * v)/ CSQ)), -0.5) * m);
 }
 
 //https://en.wikipedia.org/wiki/Velocity-addition_formula
@@ -83,7 +95,6 @@ void		sr_lorentz_transformation(double t, double *tprime, t_vector vector, t_vec
 		//TP = gamma(t - (v * n dot R / c^2))
 		//RP = R + (gamma - 1)(R dot n)n - gamma * t * v * n
 		//I'm just assuming the pointers you are sending are gonna be stack memory. If not add free() here.
-		//
 		*tprime = tp;
 		*vectorprime = vp;
 		return ; //included for flow.
@@ -91,4 +102,13 @@ void		sr_lorentz_transformation(double t, double *tprime, t_vector vector, t_vec
 
 		//okay so you have three-vector a to represent acceleration right?
 		//note in the following v represents the relative velocity while v sub m represents the magnitude thereof
-		//so a Prime (henceforth known as AP) = A / ((gamma(v sub m)^2 (1 - ((v dot UP) / c^2))^2) - ((a dot v))
+		//so a Prime (henceforth known as AP) = (A / ((gamma^2 (1 - ((v dot u) / c^2))^2))) - (((a dot v)v(gamma - 1)) / v^2 * gamma^3 * (1 - ((v dot u)/c^2))^3) + ((a dot v)u/(c^2 * gamma^2 * (1 - ((v dot u)/c^2))^3)))
+		//you know what: https://en.wikipedia.org/wiki/Acceleration_(special_relativity)#math_1b
+		//thats what I wrote but layed out better.
+		//but anyways just apply the above forumala to a sub d to get AP sub d
+//alright so here a is our acceleration, u is the velocity of the object and v is the relative velocity of the reference frames.
+/*t_vector	sr_acceleration(t_vector a, t_vector u, t_vector v)
+{
+	return (a);
+}*/
+

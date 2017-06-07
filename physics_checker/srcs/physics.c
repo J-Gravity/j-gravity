@@ -19,6 +19,11 @@
 
 //pow won't work on windows for whatever inane reason the _exp10 macro isn't recognised.
 
+double		magnitude(t_vector v)
+{
+	return (sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z)));
+}
+
 t_vector	force3d(t_body mass1, t_body mass2)
 {
 	t_vector	force;
@@ -45,7 +50,7 @@ double		findtotalmass(const t_octant *node)
 	i = node->start;
 	while (i <= node->end)
 	{
-		totalmass += node->bodies[i].mass;
+		totalmass += sr_mass_increase(node->bodies[i].mass, magnitude(node->bodies[i].velocity));
 		i++;
 	}
 	return (totalmass);
@@ -78,8 +83,11 @@ t_vector	findcenterofgravity(const t_octant *node, double combinedmass)
 void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 {
 	t_vector	f;
-
-	f = force3d(PARTICLE, body);
+	t_body		temp;
+	
+	temp = body;
+	temp.mass = sr_mass_increase(temp.mass, magnitude(temp.velocity));
+	f = force3d(PARTICLE, temp);
 	if (f.x != f.x || f.y != f.y || f.z != f.z || PARTICLE.mass != PARTICLE.mass)
 		printf("FORCE: NAN\n");
 	if (body.mass < 0 && PARTICLE.mass < 0)
