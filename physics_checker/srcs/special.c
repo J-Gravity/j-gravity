@@ -16,8 +16,8 @@ double	c = 299792458;
 double		sr_relativistic_mass(double m, double p)
 {
 	double	e;
-	e = sqrt(p * p * C * C + m * m * C * C * C * C)
-	return (e /(C * C));
+	e = sqrt(p * p * C * C + m * m * C * C * C * C);
+	return (e / CSQ);
 }
 double		sr_mass_increase(double m, double v)
 {
@@ -28,7 +28,7 @@ double		sr_mass_increase(double m, double v)
 //https://en.wikipedia.org/wiki/Velocity-addition_formula
 double		sr_velocity_addition(double u_prime, double v)
 {
-	return ((v + u_prime)/(1 + (v * u_prime / CSQ));
+	return ((v + u_prime)/(1 + (v * u_prime / CSQ)));
 }
 
 //distances be non-static yo
@@ -44,12 +44,12 @@ double		sr_time_dilation(double deltaT_rest, double v)
 
 double		sr_momentum(double m, double v)
 {
-	return ((m * v) / pow((1 - ((v * v) / CSQ)), 0.5);
+	return ((m * v) / pow((1 - ((v * v) / CSQ)), 0.5));
 }
 
 //for an observer in frame F prime which is defined by its relative velocity v to frame F, an observer movinf in F prime defines events using T prime, x prime, y prime, z prime. x and x prime are equal at t = t prime = 0 with the same holding for the relationship between y and y prime as well as z and z prime.
 //for an event in frame F with coordinates t, x, y, z the same event in F prime corresponds to t prime, x prime, y prime, and z prime with the values thereof being defined by a lorentz transformation which uses the lorentz factor gamma.A lorentz transformation in  a particular direction can be defined as a lorentz boost. Note that all Lorentz boost will affect T prime regardless of which other coordinates they effect.
-double		sr_lorentz_boost_direction(double d, double dvel, double *t)
+/*double		sr_lorentz_boost_direction(double d, double dvel, double *t)
 {
 		double	ret;
 		//returns coordinate d prime where d prime is any coordinate within frame F prime.
@@ -100,7 +100,7 @@ void		sr_lorentz_transformation(double t, double *tprime, t_vector vector, t_vec
 		*tprime = tp;
 		*vectorprime = vp;
 		return ; //included for flow.
-}
+}*/
 
 		//okay so you have three-vector a to represent acceleration right?
 		//note in the following v represents the relative velocity while v sub m represents the magnitude thereof
