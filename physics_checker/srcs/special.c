@@ -1,6 +1,6 @@
 #include <checker.h>
 
-double	c = 299792458;
+double	c = 299792.458;
 #define C c
 #define CSQ (C * C)
 #define BETA(V) (V / C)
