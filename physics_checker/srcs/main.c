@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 13:31:03 by smifsud           #+#    #+#             */
-/*   Updated: 2017/06/02 16:31:27 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/06/12 18:38:09 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void				simulation(t_octant *universe)
     while (i < 50000)
     {
         printf("OK %d\n", i);
-       // universe = barnes_hut(universe);
-	universe = brute_force(universe);
+    	universe = barnes_hut(universe);
+		//universe = brute_force(universe);
         if (i % 10000 == 0)
 	{
 		outresults(universe, i);
