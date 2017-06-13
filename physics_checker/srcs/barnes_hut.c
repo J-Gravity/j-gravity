@@ -44,7 +44,6 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 {
 	size_t		i;
 
-//	printf("beginning: [%zu, %zu]\n", node->start, node->end);
 	/*
 	**compare against all particles in current node and neighbor nodes
 	*/
@@ -68,8 +67,6 @@ void		bh(t_octant *node, t_octant *newuniverse, size_t prtc)
 		if (node->parent == NULL)
 			break ;
 		i = 0;
-//		printf("this is the node: %p\n", node);
-//		printf("parent          : %p\n", node->parent);
 		while (i < 8)
 		{
 			if (node->parent->children[i] != node)

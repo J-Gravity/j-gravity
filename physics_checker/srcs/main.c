@@ -101,7 +101,7 @@ void			outresults(t_octant *universe, int filen)
         //			printf("CORDS: x: %lf, y: %lf, z: %lf, m: %lf\n", cords[j - 4], cords[j - 3], cords[j - 2], cords[j - 1]);
         i++;
     }
-    printf("DEBUG WOKKA%ld\n", universe->end - universe->start + 1);
+    printf("DEBUG SIZE%ld\n", universe->end - universe->start + 1);
     write(fd, cords, sizeof(double) * 4 * (universe->end - universe->start + 1));
     free(cords);
     free(filename);
@@ -116,38 +116,10 @@ void				simulation(t_octant *universe)
     i = 0;
     while (i < 50000)
     {
-        /*	for (size_t j = universe->start; j <= universe->end; j++)
-            {
-            printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\nmass = (%lf)\n", 
-            j,
-            universe->bodies[j].position.x,
-            universe->bodies[j].position.y,
-            universe->bodies[j].position.z,
-            universe->bodies[j].velocity.x,
-            universe->bodies[j].velocity.y,
-            universe->bodies[j].velocity.z,
-            universe->bodies[j].mass);
-            } */
         printf("OK %d\n", i);
        // universe = barnes_hut(universe);
 	universe = brute_force(universe);
-/*		this causes linux to kill the process due to system resource usage
-        re_tree(universe);
-        octree_divide(universe); */
-        //printf("%zu, %zu\n", universe->start, universe->end);
-        /*		for (size_t j = universe->start; j <= universe->end; j++)
-                {
-                printf("PARTICLE ID %zu:\nposition = (%lf, %lf, %lf)\nvelocity = (%lf, %lf, %lf)\nmass = (%lf)\n", 
-                j,
-                universe->bodies[j].position.x,
-                universe->bodies[j].position.y,
-                universe->bodies[j].position.z,
-                universe->bodies[j].velocity.x,
-                universe->bodies[j].velocity.y,
-                universe->bodies[j].velocity.z,
-                universe->bodies[j].mass);
-                } */
-	if (i % 10000 == 0)
+        if (i % 10000 == 0)
 	{
 		outresults(universe, i);
 	}
@@ -220,7 +192,7 @@ int				main(int argc, char **argv)
     root = (t_octant*)malloc(sizeof(t_octant) * 1);
     setnode(root, bodies, nbodies);
     octree_divide(root);
-    //	print_tree(root);
+    //print_tree(root);
     simulation(root);
     return (0);
 }

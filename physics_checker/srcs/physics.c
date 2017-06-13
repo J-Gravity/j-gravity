@@ -17,7 +17,7 @@
 #define M (*newuniverse)->bodies[prtc].mass
 #define PARTICLE (*newuniverse)->bodies[prtc]
 
-//pow won't work on windows for whatever inane reason the _exp10 macro isn't recognised.
+//for whatever inane reason the _exp10 macro isn't recognised on windows.
 
 double		magnitude(t_vector v)
 {
@@ -68,12 +68,8 @@ t_vector	findcenterofgravity(const t_octant *node, double combinedmass)
         center.x += (node->bodies[i].position.x * node->bodies[i].mass);
         center.y += (node->bodies[i].position.y * node->bodies[i].mass);
         center.z += (node->bodies[i].position.z * node->bodies[i].mass);
-	//	printf("cog PARTICLE %ld: position: (%lf, %lf, %lf)\n", i, node->bodies[i].position.x,
-//									node->bodies[i].position.y,
-//									node->bodies[i].position.z);
-		i++;
+	i++;
     }
-	//printf("DEBUG %lf %lf\n", center.x, combinedmass);
     center.x /= combinedmass;
     center.y /= combinedmass;
     center.z /= combinedmass;
@@ -107,7 +103,6 @@ void		adjustvelocity(t_octant **newuniverse, size_t prtc, t_body body)
 		PARTICLE.velocity.z != PARTICLE.velocity.z)
 		printf("adjustvelocity: NAN occurred\n");
 
-	//printf("DEBUG PARTICLE: %ld %.20lf\n", prtc, PARTICLE.velocity.x);
 }
 
 void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *node)
@@ -119,7 +114,6 @@ void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *
 	if (body.mass == 0)
 		return ;
 	body.position = findcenterofgravity(node, body.mass);
-	//printf("position.x = %.40lf, mass = %.40lf\n", body.position.x, body.mass);
 	f = force3d(PARTICLE, body);
 	if (body.mass < 0 && PARTICLE.mass < 0)
 	{
@@ -133,7 +127,6 @@ void		adjustvelocity_nodes(t_octant **newuniverse, size_t prtc, const t_octant *
 		PARTICLE.velocity.y -= ((f.y)/(PARTICLE.mass)) * TIMESTEP;
 		PARTICLE.velocity.z -= ((f.z)/(PARTICLE.mass)) * TIMESTEP;
 	}
-	//printf("DEBUG NODE: % ld %.20lf\n", prtc, PARTICLE.velocity.x);
 }
 
 void		adjustposition(t_octant **newuniverse, size_t prtc)

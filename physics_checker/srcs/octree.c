@@ -187,11 +187,6 @@ void		octree_divide(t_octant *root)
 		createchildren(root);
 		return ;
 	}
-	/*
-	if (50 == getdepth(root))
-		return ;
-		*/
-	//printf("nodep %p\n", root);
     createchildren(root);
     find_octant(root);
     qsort(&(root->bodies[root->start]), (root->end - root->start + 1), sizeof(t_body), compare_octant);
