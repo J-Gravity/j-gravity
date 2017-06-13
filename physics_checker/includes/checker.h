@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 13:07:49 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/26 18:57:01 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/05/31 16:25:05 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 #include <string.h>
 
 # define TIMESTEP 1.0
-#define G 0.000000000066742
+//#define G 0.000000000066742
+# define G (1.327 * pow(10, 13)) //kilometers, solar masses, (km/s)^2
 
 # define ABS(x) (x < 0 ? -x : x)
 #define UNITVECTOR(X1, X2) (X2 - X1)/ABS(X2 - X1)
-#define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
+//#define FORCE3D(S, C2, C1) ((G * body.mass * M) / (pow(DIST(C1, C2), 3))) * UNITVECTOR(C1.S, C2.S)
 //FORCE3D is in the form vector component, body being acted upon, source body
 
 typedef struct	s_vector
@@ -48,14 +49,18 @@ typedef struct	s_invector
 	float		y;
 	float		z;
 	float		mass;
+	float		xvel;
+	float		yvel;
+	float		zvel;
+	float		empty;
 }				t_invector;
 
 typedef struct	s_body
 {
+    size_t      id;
 	double		mass;
 	t_vector	position;
 	t_vector	velocity;
-	t_vector	force;
 	char		octant;
 }				t_body;
 
@@ -77,6 +82,7 @@ typedef struct	s_bharg
 
 void			octree_divide(t_octant *root);
 void			print_tree(t_octant *root);
+void			re_tree(t_octant *root);
 
 size_t			array_len(void *ptr, size_t datasize);
 int64_t			parsenbodies(char *buf);
@@ -90,12 +96,21 @@ t_body			*sortbodies(t_body *bodies);
 t_body			*getbodies(int fd, int64_t nbodies);
 
 t_octant		*barnes_hut(t_octant *root);
+t_octant		*brute_force(t_octant *root);
 
 void			adjustposition(t_octant **newuniverse, size_t index);
 void			adjustvelocity(t_octant **newuniverse, size_t index, t_body body);
 void			adjustvelocity_nodes(t_octant **newuniverse, size_t index, const t_octant *node);
 double			findtotalmass(const t_octant *node);
 t_vector		findcenterofgravity(const t_octant *node, double combinedmass);
+
+double			sr_relativistic_mass(double m, double p);
+double			sr_mass_increase(double m, double v);
+double			sr_velocity_addition(double u_prime, double v);
+double			sr_length_contraction(double l, double v);
+double			sr_time_dilation(double t, double v);
+double			sr_momentum(double m, double v);
+double			sr_lorentz_boost_direction(double d, double dvel, double *t);
 
 #endif
 
