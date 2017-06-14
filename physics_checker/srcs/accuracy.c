@@ -6,7 +6,7 @@
 /*   By: smifsud <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 18:12:27 by smifsud           #+#    #+#             */
-/*   Updated: 2017/05/30 15:12:28 by smifsud          ###   ########.fr       */
+/*   Updated: 2017/06/13 18:48:00 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_body			makebody(t_invector inpos, t_invector invel)
 	newbody.velocity.z = invel.z;
 	return (newbody);
 }
-
+/*
 void			accuracy_check(int cpucomp, int gpucomp)
 {
 	t_vector	cpu_buf;
@@ -128,7 +128,48 @@ void			accuracy_check(int cpucomp, int gpucomp)
 	mpf_clear(gpu_m);
 	mpf_clear(temp);
 }
+*/
+double		gpudist(t_fvector pos)
+{
+	double	ret;
 
+	ret = sqrt((pos.x * pos.x) + (pos.y + pos.y) + (pos.z * pos.z));
+	return (ret);
+}
+void		accuracy_check(int cpu, int gpu)
+{
+	t_vector	cpu_buf;
+	t_fvector	gpu_buf;
+	double		cpu_mass;
+	float		gpu_mass;
+
+	mpf_t		cpucomp;
+	mpf_t		gpucomp;
+	mpf_t		dist;
+	mpf_init2(cpucomp, 1024);
+	mpf_init2(gpucomp, 1024);
+	mpf_init2(dist, 1024);
+	mpf_set_d(cpucomp, 0);
+	mpf_set_d(gpucomp, 0);
+	while (read(cpu, &cpu_buf, sizeof(double) * 3))
+	{
+		read(cpu, &cpu_mass, sizeof(double));
+		printf("HMMM %lf, %lf, %lf\n", cpu_buf.x, cpu_buf.y, cpu_buf.z);
+		mpf_set_d(dist, finddist(cpu_buf));
+		printf("UI\n");
+		mpf_add(cpucomp, cpucomp, dist);
+		printf("DEBUG\n");
+	}
+	printf("OUT\n");
+	while (read(gpu, &gpu_buf, sizeof(t_fvector)))
+	{
+		read(gpu, &gpu_mass, sizeof(float));
+		mpf_set_d(dist, gpudist(gpu_buf));
+		mpf_add(gpucomp, gpucomp, dist);
+	}
+	mpf_sub(cpucomp, cpucomp, gpucomp);
+	printf("CPU - GPU : %lf\n", mpf_get_d(cpucomp));
+}
 int			main(int argc, char **argv)
 {
 	accuracy_check(open(argv[1], O_RDONLY), open(argv[2], O_RDONLY));
