@@ -23,6 +23,9 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp
 $(NAME): $(OBJ)
 	$(CC) $(LDFLAGS) $(OBJ) -o $(NAME)
 
+debug:
+	$(CC) $(LDFLAGS) $(OBJ) -o $(NAME) -fsanitize=address
+
 clean:
 	rm -rf $(OBJDIR)
 
