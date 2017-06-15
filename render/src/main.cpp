@@ -17,10 +17,6 @@ typedef struct	particle_s
 	float		y;
 	float		z;
 	float		m;
-	float		xv;
-	float		yv;
-	float		zv;
-	float		e;
 }				particle;
 
 bool		zcomp(particle a, particle b)
