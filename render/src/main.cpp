@@ -30,13 +30,15 @@ void				sortfile(std::string path, int i)
 	std::string		newpath;
 	char			*towrite;
 	int				readsize;
-	char			*buf;
+	char			buf[8];
 	particle		*particles;
 
 	newpath = "/tmp/new.jgrav";
 	std::ofstream outfile (newpath);
 	std::ifstream file (path, std::ios::in|std::ios::binary|std::ios::ate);
 	particles = (particle*)malloc(sizeof(particle) * BUFSIZE);
+	file.read(buf, 8);
+	outfile.write(buf, 8);
 	while ((readsize = file.read((char*)particles, BUFSIZE * sizeof(particle))))
 	{
 		std::sort(particles, &(particles[BUFSIZE - 1]), zcomp);
