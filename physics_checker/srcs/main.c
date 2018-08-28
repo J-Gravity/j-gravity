@@ -9,15 +9,17 @@
 /*   Updated: 2017/06/12 18:38:09 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
 
 #include <stdlib.h>
 #include <fcntl.h>
 #include <checker.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <time.h>
 #include <pthread.h>
-
+#include <stdio.h>
 void			setnode(t_octant *node, t_body *bodies, int64_t nbodies)
 {
     node->parent = 0;
