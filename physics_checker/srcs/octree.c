@@ -9,6 +9,9 @@
 /*   Updated: 2017/05/28 17:58:30 by smifsud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
 
 #include "checker.h"
 #include <stdlib.h>
